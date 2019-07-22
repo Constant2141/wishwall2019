@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+      "module": "commonjs",
+      "target": "es2017",
+      "noImplicitAny": false,
+      "moduleResolution": "node",
+      "sourceMap": false,
+      "esModuleInterop": true,
+      "rootDirs": [
+        "./utils",
+        "./routes",
+        "./app.js"
+      ]
+  },
+  "include": [
+    "./utils",
+    "./routes",
+    "./app.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

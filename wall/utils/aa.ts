@@ -1,0 +1,1 @@
+var gggg:string ='af'

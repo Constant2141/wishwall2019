@@ -5,8 +5,8 @@
   "scripts": {
     "prd": "pm2 start bin/www",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc -w --outDir ./dist --project ./tsconfig.json",
-    "dev": "nodemon --watch routes --watch utils -e ts --exec ts-node bin/www",
+    "build": "tsc --outDir ./dist",
+    "dev": "nodemon --watch routes --watch utils --watch ./ -e ts --exec ts-node bin/www",
     "dev_old": "./node_modules/.bin/nodemon bin/www"
   },
   "dependencies": {

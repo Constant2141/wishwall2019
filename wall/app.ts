@@ -23,6 +23,10 @@ app.use(views(__dirname + '/views', {
   extension: 'pug'
 }))
 
+
+app.context.db=require('./utils/db');
+
+
 // logger
 app.use(async (ctx, next) => {
   const start = new Date().getTime()

@@ -1,19 +1,19 @@
 const router = require('koa-router')()
+const {UserModel} = require('../utils/db/model')
 
-router.get('/', async (ctx, next) => {
-  await ctx.render('index', {
-    title: 'Hello Koa 111!'
+router.get('/create', async (ctx, next) => {
+  let newUser = await UserModel.create({
+    username: "隔壁老王",
+    sex: "男吧"
   })
+  console.log('创建：' + JSON.stringify(newUser))
+  ctx.body = '创建一个老王'
 })
 
-router.get('/string', async (ctx, next) => {
-  ctx.body = 'koa2 string'
-})
+router.get('/findAll', async (ctx, next) => {
+  const allUser = await UserModel.findAll()
 
-router.get('/json', async (ctx, next) => {
-  ctx.body = {
-    title: 'koa2 json'
-  }
+  ctx.body = allUser
 })
 
 module.exports = router

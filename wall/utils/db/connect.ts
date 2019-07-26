@@ -1,27 +1,21 @@
-module.exports = class Connect {
-  sequelize: object | any
+import { Sequelize } from 'sequelize-typescript';
+const config = require('./config')
 
-  constructor(){
-    const Sequelize = require('sequelize');
-    const config = require('./config');
-    this.sequelize = new Sequelize(config.db, config.username, config.password, {
-      host: config.host,
-      dialect: config.dialect, 
-      pool: config.pool
-    })
-    this.isConnect();
-  }
-  isConnect():void {
-    this.sequelize
-    .authenticate()
-    .then(() => {
-      console.log('连接成功')
-    })
-    .catch(err => {
-      console.log('连接数据库失败', err)
-    })
-  }
-}
+const sequelize = new Sequelize({
+  database: config.database,
+  dialect: config.dialect,
+  username: config.username,
+  password: config.password,
+  pool: config.pool,
+  host:config.host
+});
 
-// 连接是否成功
+sequelize.authenticate()
+  .then(async () => {
+    console.log('连接成功')
+  })
+  .catch(err => {
+    console.log('连接数据库失败', err)
+  })
 
+  module.exports = sequelize

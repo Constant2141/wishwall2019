@@ -1,8 +1,8 @@
 const router = require('koa-router')()
-const {UserModel} = require('../utils/db/model')
+import { User } from '../utils/db/models/User'
 
 router.get('/create', async (ctx, next) => {
-  let newUser = await UserModel.create({
+  let newUser = await User.create({
     username: "隔壁老王",
     sex: "男吧"
   })
@@ -11,7 +11,7 @@ router.get('/create', async (ctx, next) => {
 })
 
 router.get('/findAll', async (ctx, next) => {
-  const allUser = await UserModel.findAll()
+  const allUser = await User.findAll()
 
   ctx.body = allUser
 })

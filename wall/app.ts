@@ -24,7 +24,7 @@ app.use(views(__dirname + '/views', {
 }))
 
 
-app.context.db=require('./utils/db');
+// app.context.db=require('./utils/db');
 
 
 // logger

@@ -5,7 +5,7 @@ const json = require('koa-json')
 const koaError = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
-
+const db = require('./utils/db/')
 const index = require('./routes/index')
 
 // error handler

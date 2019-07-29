@@ -1,5 +1,9 @@
-const router = require('koa-router')()
+const Router=require('koa-router');
+let router=new Router();
+
 import { User } from '../utils/db/models/User'
+
+
 
 router.get('/create', async (ctx, next) => {
   let newUser = await User.create({
@@ -15,5 +19,8 @@ router.get('/findAll', async (ctx, next) => {
 
   ctx.body = allUser
 })
+console.log(require('./login.ts'));
+
+router.use('/login',require('./login.ts'))
 
 module.exports = router

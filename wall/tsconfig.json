@@ -11,14 +11,14 @@
       "rootDirs": [
         "./utils",
         "./routes",
-        "./dao",
+        "./controller",
         "./app.js"
       ]
   },
   "include": [
     "./utils",
     "./routes",
-    "./dao",
+    "./controller",
     "./app.ts"
   ],
   "exclude": [

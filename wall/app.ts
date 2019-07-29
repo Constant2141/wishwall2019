@@ -5,7 +5,7 @@ const json = require('koa-json')
 const koaError = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
-
+const db = require('./utils/db/')
 const index = require('./routes/index')
 
 // error handler
@@ -22,6 +22,10 @@ app.use(require('koa-static')(__dirname + '/public'))
 app.use(views(__dirname + '/views', {
   extension: 'pug'
 }))
+
+
+// app.context.db=require('./utils/db');
+
 
 // logger
 app.use(async (ctx, next) => {

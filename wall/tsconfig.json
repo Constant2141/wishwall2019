@@ -1,20 +1,24 @@
 {
   "compilerOptions": {
       "module": "commonjs",
-      "target": "es2017",
+      "target": "es6",
       "noImplicitAny": false,
       "moduleResolution": "node",
       "sourceMap": false,
       "esModuleInterop": true,
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
       "rootDirs": [
         "./utils",
         "./routes",
+        "./controller",
         "./app.js"
       ]
   },
   "include": [
     "./utils",
     "./routes",
+    "./controller",
     "./app.ts"
   ],
   "exclude": [

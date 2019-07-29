@@ -1,21 +1,26 @@
-const router = require('koa-router')()
-const db  = require('../utils/db/index')
+const Router=require('koa-router');
+let router=new Router();
 
-router.get('/', async (ctx, next) => {
-  await ctx.render('index', {
-    title: 'Hello Koa 111!'
+import { User } from '../utils/db/models/User'
+
+
+
+router.get('/create', async (ctx, next) => {
+  let newUser = await User.create({
+    username: "隔壁老王",
+    sex: "男吧"
   })
+  console.log('创建：' + JSON.stringify(newUser))
+  ctx.body = '创建一个老王'
 })
 
+router.get('/findAll', async (ctx, next) => {
+  const allUser = await User.findAll()
 
-router.get('/string', async (ctx, next) => {
-  
+  ctx.body = allUser
 })
+console.log(require('./login.ts'));
 
-router.get('/json', async (ctx, next) => {
-  ctx.body = {
-    title: 'koa2 json'
-  }
-})
+router.use('/login',require('./login.ts'))
 
 module.exports = router

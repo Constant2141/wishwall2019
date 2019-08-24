@@ -1,5 +1,5 @@
 module.exports = {
-    database: 'wall2019',
+    database: '2019wall',
     username: "root",
     password: "wanna.2141",
     host: "localhost",

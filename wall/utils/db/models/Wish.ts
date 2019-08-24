@@ -9,10 +9,13 @@ export class Wish extends Model<Wish> {
   id: number
 
   @Column
-  name: string
+  event: string
 
   @Column
   author: string
+
+  @Column
+  thumbsUp:number
 }
 
 

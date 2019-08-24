@@ -5,9 +5,8 @@ const json = require('koa-json')
 const koaError = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
-
-const index = require('./routes/index')
-
+const db = require('./utils/db/')
+const index = require('./routes/index') 
 // error handler
 koaError(app)
 
@@ -24,7 +23,7 @@ app.use(views(__dirname + '/views', {
 }))
 
 
-app.context.db=require('./utils/db');
+// app.context.db=require('./utils/db');
 
 
 // logger

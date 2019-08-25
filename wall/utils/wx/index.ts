@@ -19,7 +19,7 @@ export async function  getUserInfo(code) {
             console.log('access_token is here: ', access_token);
             rp(`https://api.weixin.qq.com/sns/userinfo?access_token=${access_token}&openid=${openid}&lang=zh_CN`)
             .then(data => {
-              console.log('data is here: ', JSON.parse(data));
+              // console.log('data is here: ', JSON.parse(data));
               result = JSON.parse(data);
               result.access_token = access_token;
               resolve(result);

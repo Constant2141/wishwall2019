@@ -11,11 +11,14 @@ export class Gain extends Model<Gain> {
   @Column
   openid: string
  
-  @Column
-  uuid:string
+  // @Column
+  // headimgurl: string
 
   @Column
   nickname:string
+  
+  @Column
+  uuid:string
 }
 
 

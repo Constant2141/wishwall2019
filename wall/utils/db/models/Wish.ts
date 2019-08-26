@@ -36,10 +36,10 @@ export class Wish extends Model<Wish> {
   @Default(0)
   @Column
   wish_status:number  // 0 未被领取， 1 被领取，2 完成
-  
+
   @Default(0)
   @Column
-  wish_like:number 
+  wish_many:number
 
   @Column
   pick_time:Date
@@ -49,7 +49,9 @@ export class Wish extends Model<Wish> {
 
   @Default(false)
   @Column
-  likeOrNot:boolean
+  gainOrNot:boolean
+
+ 
 }
 
 

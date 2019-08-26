@@ -1,9 +1,9 @@
 import { Table, Column, Model, Max } from 'sequelize-typescript'
 
-enum gender{
-    male='男',
-    female='女'
-}
+// enum gender{
+//     male='男',
+//     female='女'
+// }
 
 @Table({
   timestamps: false
@@ -23,7 +23,7 @@ export class User extends Model<User> {
   openid: string
   
   @Column
-  sex: gender
+  sex: number
 
   @Column
   headimgurl: string

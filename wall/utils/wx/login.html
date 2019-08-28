@@ -7,13 +7,44 @@
   <title>Document</title>
 </head>
 <body>
-  <input type="button" id="login" value="登录"></div>
+  <input type="button" id="button" value="拿数据">
+  <div id="div">xxxx</div>
   <script>
-    document.querySelector('#login').onclick = async () => {
-        let res = await fetch(`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa70c4891aeab4ae1&redirect_uri=http%3A%2F%2Fwx.zqyy.site&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`)
-        let json = await res.json()
-        console.log(json);
-        
+    let RE = new RegExp(/\w+\&/);
+    // alert()
+    let str = location.search.match(RE)[0]
+    let len = str.length;
+    let code = str.substring(0,len-1);
+    
+    document.querySelector('#button').onclick = ()=> {
+      
+      let ajax = new XMLHttpRequest();
+
+      ajax.open('GET',`http://47.100.12.168:8081/getUserInfo?code=${code}`,true);
+      //第一个参数为请求方式，第二个为请求域名，第三个true表示为异步操作
+      ajax.send();
+      //若是POST请求则把数据写在send里面
+
+      ajax.onreadystatechange = function (){
+        //0:初始化 1：已连接 2：请求已发送 3：响应头已接收 4：
+        if(ajax.readyState == 4){
+          if(ajax.status >= 200 && ajax.status < 300 || ajax.status == 304){
+            alert('success');
+            let json = ajax.responseText
+              alert(json);
+              document.querySelector('#div').innerHTML =  json
+            //还有个responseXML
+          }else{
+            alert('fail');
+          }
+        }
+      };
+
+    //   let res = fetch(`http://47.100.12.168:8081/getUserInfo?code=${code}`,{
+    //   mode:'no-cors'
+    // }).then(res => {
+    //   alert(res)
+    // })
     }
   </script>
 </body>

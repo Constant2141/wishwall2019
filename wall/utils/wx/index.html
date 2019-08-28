@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <input type="button" id="login" value="登录"></div>
+  <script>
+    document.querySelector('#login').onclick = async () => {
+      
+      window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa70c4891aeab4ae1&redirect_uri=http%3A%2F%2Fwx.1bin.top%2Flogin.html&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
+        
+    }
+  </script>
+</body>
+</html>

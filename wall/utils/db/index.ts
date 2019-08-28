@@ -1,12 +1,14 @@
 import { User } from './models/User'
 import { Wish } from './models/Wish'
+import { Gain } from './models/Gain'
+import { Like } from './models/Like'
 const sequelize = require('./connect')
 
 
-//添加models后需要在这里声明，在上面import
-sequelize.addModels([User, Wish]);
 
-sequelize.sync().then(res => {
+sequelize.addModels([User, Wish,Gain,Like]);
+
+sequelize.sync({force:false}).then(res => {
   console.log('init success');
 
 }).catch(err => {

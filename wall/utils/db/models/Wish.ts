@@ -1,4 +1,5 @@
-import { Table, Column, Model } from 'sequelize-typescript'
+import { Table, Column, Model, Max, AutoIncrement, Default } from 'sequelize-typescript'
+
 
 @Table
 export class Wish extends Model<Wish> {
@@ -6,13 +7,51 @@ export class Wish extends Model<Wish> {
     primaryKey: true,
     autoIncrement: true,
   })
-  id: number
+  wish_id: number                //每个愿望唯一id
 
   @Column
-  name: string
+  openid: string   //发布者openid
 
   @Column
-  author: string
+  uuid: string   //目标对象的唯一标识
+
+  @Column
+  headimgurl:string
+
+  @Column
+  nickname:string
+
+  @Column
+  picker_openid: string //领取者openid
+
+  @Column
+  wish_content: string
+
+  @Column
+  wish_type:string
+
+  @Column
+  wish_where:string
+
+  @Default(0)
+  @Column
+  wish_status:number  // 0 未被领取， 1 被领取，2 完成
+
+  @Default(0)
+  @Column
+  wish_many:number
+
+  @Column
+  pick_time:Date
+
+  @Column
+  finish_time:Date
+
+  @Default(false)
+  @Column
+  gainOrNot:boolean
+
+ 
 }
 
 

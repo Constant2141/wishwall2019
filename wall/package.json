@@ -12,10 +12,12 @@
   "dependencies": {
     "debug": "^2.6.3",
     "install": "^0.13.0",
+    "jsonwebtoken": "^8.5.1",
     "koa": "^2.2.0",
     "koa-bodyparser": "^3.2.0",
     "koa-convert": "^1.2.0",
     "koa-json": "^2.0.2",
+    "koa-jwt": "^3.6.0",
     "koa-logger": "^2.0.1",
     "koa-onerror": "^1.2.1",
     "koa-router": "^7.1.1",
@@ -25,7 +27,8 @@
     "npm": "^6.10.2",
     "pug": "^2.0.0-rc.1",
     "sequelize": "^5.10.3",
-    "sequelize-typescript": "^1.0.0-beta.3"
+    "sequelize-typescript": "^1.0.0-beta.3",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.27",

@@ -1,26 +1,11 @@
-const Router=require('koa-router');
-let router=new Router();
+const routerApi = require('koa-router')();
+const login = require('./login')
+const user = require('./user')
+const wish = require('./wish')
 
-import { User } from '../utils/db/models/User'
+routerApi.use('/login', login.routes(), login.allowedMethods())
+routerApi.use('/user', user.routes(), user.allowedMethods())
+routerApi.use('/wish', wish.routes(), wish.allowedMethods())
 
 
-
-router.get('/create', async (ctx, next) => {
-  let newUser = await User.create({
-    username: "隔壁老王",
-    sex: "男吧"
-  })
-  console.log('创建：' + JSON.stringify(newUser))
-  ctx.body = '创建一个老王'
-})
-
-router.get('/findAll', async (ctx, next) => {
-  const allUser = await User.findAll()
-
-  ctx.body = allUser
-})
-console.log(require('./login.ts'));
-
-router.use('/login',require('./login.ts'))
-
-module.exports = router
+module.exports = routerApi

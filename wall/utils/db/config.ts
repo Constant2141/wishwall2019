@@ -1,7 +1,7 @@
 module.exports = {
     database: '2019wall',
     username: "root",
-    password: "123456",
+    password: "1234567",
     host: "localhost",
     dialect: "mysql",
     pool: {

@@ -37,8 +37,11 @@ export class User extends Model<User> {
   @Column
   city:string
 
-  // @Column
-  // access_token: string
+  @Column
+  access_token: string
+  
+  @Column
+  refresh_token: string
 }
 
 

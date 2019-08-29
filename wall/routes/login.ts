@@ -21,24 +21,23 @@ router.get('/', async ctx => {
       return User;
     }
   })
-  
-  let token = getToken(User)
+  User.token = getToken(User)
 
-  ctx.body = token
-
-  //刷新access_token
-  // rp(`https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=${wxConfig.appid}&grant_type=refresh_token&refresh_token=${refresh_token}`)
-  // .then( data => {
-  //   let { access_token } = JSON.parse(data);
-  //   if( access_token != undefined) {
-  //     console.log(access_token);
-  //   }
-  //   console.log(JSON.parse(data));
-  // })
-
+  ctx.body = User
 })
 
+router.get('/test', async ctx => {
+  let { access_token, openid } = ctx.request.query
+  
+  let data = await rp(`https://api.weixin.qq.com/sns/userinfo?access_token=${access_token}&openid=${openid}&lang=zh_CN`)
+  .then(data => {
+    console.log(JSON.parse(data));
+    return JSON.parse(data)
+  })
+  
+  data.token = getToken(data)
 
-
+  ctx.body = await data
+})
 
 module.exports = router;

@@ -6,16 +6,13 @@ export class Like extends Model<Like> {
     primaryKey: true,
     autoIncrement: true,
   })
-  id: number
+  id: number//n
 
   @Column
-  openid: string
+  openid: number
  
   @Column
-  uuid:string
-  
-  // @Column(DataType.STRING(64))
-  // test:string
+  uuid:number
 }
 
 

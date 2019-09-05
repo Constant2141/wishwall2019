@@ -1,4 +1,4 @@
-import { Table, Column, Model, Max } from 'sequelize-typescript'
+import { Table, Column, Model, Max, Length, DataType } from 'sequelize-typescript'
 
 // enum gender{
 //     male='男',
@@ -18,27 +18,31 @@ export class User extends Model<User> {
 
   @Column({
     unique: true,
-    primaryKey: true
+    primaryKey: true,
+    type: DataType.STRING(128)
   })
   openid: string
   
   @Column
   sex: number
 
-  @Column
+  @Column(DataType.STRING(128))
   headimgurl: string
 
-  @Column
+  @Column(DataType.STRING(128))
   nickname: string
 
-  @Column
+  @Column(DataType.STRING(128))
   province:string
   
-  @Column
+  @Column(DataType.STRING(128))
   city:string
 
-  // @Column
-  // access_token: string
+  @Column(DataType.STRING(128))
+  access_token: string
+  
+  @Column(DataType.STRING(128))
+  refresh_token: string
 }
 
 

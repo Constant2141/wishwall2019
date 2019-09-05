@@ -10,8 +10,8 @@ const getToken = ({ nickname, openid,headimgurl,sex }) => {
         headimgurl,
         sex
     };
-    console.log('要签名的东西在这');
-    console.log(payload);
+    // console.log('要签名的东西在这');
+    // console.log(payload);
 
     let token = jwt.sign(payload, jwtSecret, { expiresIn: "15d" });
     return token;

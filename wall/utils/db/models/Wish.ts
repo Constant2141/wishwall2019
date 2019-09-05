@@ -16,10 +16,10 @@ export class Wish extends Model<Wish> {
   uuid: string   //目标对象的唯一标识
 
   @Column
-  headimgurl:string
+  headimgurl:string  
 
   @Column
-  nickname:string
+  nickname:string  //匿名或微信名
 
   @Column
   picker_openid: string //领取者openid

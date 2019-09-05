@@ -1,4 +1,4 @@
-import { Table, Column, Model } from 'sequelize-typescript'
+import { Table, Column, Model, DataType } from 'sequelize-typescript'
 
 @Table
 export class Like extends Model<Like> {
@@ -13,6 +13,9 @@ export class Like extends Model<Like> {
  
   @Column
   uuid:string
+  
+  // @Column(DataType.STRING(64))
+  // test:string
 }
 
 

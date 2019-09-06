@@ -42,13 +42,10 @@ router.get('/test', async ctx => {
     
     return JSON.parse(data)
   })
-  await console.log(User,'user user')
 
   User = await addUser(User)
 
   User.token =await getToken(User)
-
-  await console.log(User.token,'ssdadasdasd',User);
 
   ctx.body = await User
 })

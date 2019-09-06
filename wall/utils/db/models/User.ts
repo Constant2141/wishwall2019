@@ -26,7 +26,7 @@ export class User extends Model<User> {
   @Column
   sex: number
 
-  @Column(DataType.STRING(128))
+  @Column(DataType.STRING(170))
   headimgurl: string
 
   @Column(DataType.STRING(128))
@@ -38,11 +38,11 @@ export class User extends Model<User> {
   @Column(DataType.STRING(128))
   city:string
 
-  @Column(DataType.STRING(128))
-  access_token: string
+  // @Column(DataType.STRING(128))
+  // access_token: string
   
-  @Column(DataType.STRING(128))
-  refresh_token: string
+  // @Column(DataType.STRING(128))
+  // refresh_token: string
 }
 
 

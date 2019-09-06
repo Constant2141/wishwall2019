@@ -4,6 +4,7 @@ const config = require('./config')
 const sequelize = new Sequelize({
   database: config.database,
   dialect: config.dialect,
+  define: config.define,
   username: config.username,
   password: config.password,
   pool: config.pool,

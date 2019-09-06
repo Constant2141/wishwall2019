@@ -4,6 +4,9 @@ module.exports = {
     password: "123456",
     host: "localhost",
     dialect: "mysql",
+    define: {
+        charset: 'utf8mb4',
+    },
     pool: {
         max: 5,
         min: 0,

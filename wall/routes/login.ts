@@ -6,12 +6,11 @@ import { getUserInfo } from '../utils/wx/index';
 import { addUser } from '../Dao/loginDao';
 
 let router = new Router();
-import { User } from '../utils/db/models/User'
 
 router.get('/', async ctx => {
   
   let { code } = ctx.request.query
-
+ 
   let User = await getUserInfo(code).then(async data => {
     if (data == {}) {
       return "拿不到用户数据"
@@ -41,11 +40,19 @@ router.get('/test', async ctx => {
   .then(data => {
     
     return JSON.parse(data)
-  })
+  }) //这个，最终拿到用户的详细信息
 
-  data.token = getToken(data)
+  // data.token = getToken(data)
 
-  ctx.body = await data
+  // ctx.body = await data
+
+
+  data.access_token = newAccess;
+  data.refresh_token = refresh_token;
+  
+  let User = await addUser(data); 
+  User.token =await getToken(User)
+  ctx.body = await User
 })
 
 router.get('/getUserInfo', async ctx => {

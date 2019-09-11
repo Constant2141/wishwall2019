@@ -26,7 +26,7 @@ export class User extends Model<User> {
   @Column
   sex: number
 
-  @Column(DataType.STRING(128))
+  @Column(DataType.STRING(150))
   headimgurl: string
 
   @Column(DataType.STRING(128))

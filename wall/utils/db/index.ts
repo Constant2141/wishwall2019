@@ -6,10 +6,10 @@ const sequelize = require('./connect')
 
 
 
-// sequelize.addModels([User, Wish,Gain,Like]);
-sequelize.addModels([User]);
+sequelize.addModels([User, Wish,Gain,Like]);
+// sequelize.addModels([User]);
 
-sequelize.sync({force:false}).then(res => {
+sequelize.sync({force:true}).then(res => {
   console.log('init success');
 
 }).catch(err => {

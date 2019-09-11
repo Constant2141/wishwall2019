@@ -1,5 +1,3 @@
-import { log } from "util";
-
 const Koa = require('koa')
 const app = new Koa()
 const views = require('koa-views')
@@ -11,6 +9,7 @@ const db = require('./utils/db/')
 const koaJwt = require("koa-jwt");
 const index = require('./routes/index') 
 const tokenSecret = "nwernwer";
+const cors = require('koa2-cors');
 
 // error handler
 koaError(app)
@@ -22,6 +21,7 @@ app.use(bodyparser({
 app.use(json())
 app.use(logger())
 app.use(require('koa-static')(__dirname + '/public'))
+app.use(cors());
 
 app.use(views(__dirname + '/views', {
   extension: 'pug'

@@ -13,7 +13,7 @@ export class Wish extends Model<Wish> {
   openid: string   //发布者openid
 
   @Column
-  uuid: string   //目标对象的唯一标识
+  uuid: string   
 
   @Column
   headimgurl:string  

@@ -1,7 +1,6 @@
 import { Wish } from '../utils/db/models/Wish'
 import { Like } from '../utils/db/models/Like'
 import { Gain } from '../utils/db/models/Gain'
-import { resolve, reject } from 'bluebird';
 const Uuid = require("uuid");
 
 //获得某个校区的愿望,按发布时间排序

@@ -30,28 +30,22 @@ router.get('/test', async ctx => {
  
   let newAccess = await rp(`https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=${wxConfig.appid}&grant_type=refresh_token&refresh_token=${refresh_token}`)
   .then(data => {
-    console.log(data,'123',data.access_token);
+    // console.log(data,'123',data.access_token);
     return JSON.parse(data).access_token
   })
 
   // console.log(newAccess,'aaaaa');
   
-  let data = await rp(`https://api.weixin.qq.com/sns/userinfo?access_token=${newAccess}&openid=${openid}&lang=zh_CN`)
+  let User = await rp(`https://api.weixin.qq.com/sns/userinfo?access_token=${newAccess}&openid=${openid}&lang=zh_CN`)
   .then(data => {
     
     return JSON.parse(data)
   }) //这个，最终拿到用户的详细信息
 
-  // data.token = getToken(data)
+  User = await addUser(User)
 
-  // ctx.body = await data
-
-
-  data.access_token = newAccess;
-  data.refresh_token = refresh_token;
-  
-  let User = await addUser(data); 
   User.token =await getToken(User)
+
   ctx.body = await User
 })
 

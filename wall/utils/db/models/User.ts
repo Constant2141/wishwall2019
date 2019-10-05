@@ -19,7 +19,7 @@ export class User extends Model<User> {
   @Column({
     unique: true,
     primaryKey: true,
-    type: DataType.STRING(128)
+    type: DataType.STRING(190)
   })
   openid: string
   

@@ -11,6 +11,9 @@ const db = require('./utils/db/')
 const koaJwt = require("koa-jwt");
 const index = require('./routes/index') 
 const tokenSecret = "nwernwer";
+const cors = require('koa-cors');
+
+app.use(cors());
 
 // error handler
 koaError(app)

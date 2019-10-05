@@ -1,7 +1,7 @@
 const Router = require('koa-router');
 const rp = require('request-promise');
 const wxConfig = require('../utils/wx/config');
-const getToken = require('../utils/jwt/getToken')
+const getToken = require('../utils/jwt/getToken');
 import { getUserInfo } from '../utils/wx/index';
 import { addUser } from '../Dao/loginDao';
 
@@ -42,7 +42,8 @@ router.get('/test', async ctx => {
     
     return JSON.parse(data)
   })
-
+  console.log(User,'<<===');
+  
   User = await addUser(User)
 
   User.token =await getToken(User)
@@ -74,6 +75,11 @@ router.get('/getUserInfo', async ctx => {
       refresh_token = '25_VB1OmLTBai95kSdsI9hd5HfQQgiwWzKntCsH9n4oy-g-oiun0NVajKKLBm6jxcn0wM6o6RifYAVANbqkN-AaSZ7W9Jx4Ogg8KVTCGafd6Dk'
       break;
     
+    case '04':
+      openid = 'oO7BY6P--E2z-Q81w5lp6GpST-XM';
+      refresh_token = '26_VXSzMP3NrCwpPoEGfbwszgkrmQK4D3a6wErDSn3b0VkqRug4h3J2nB9gqRuz6M9lzBFDISA-oirdZPfLYUIAh4Vbf_BozL-a8REN8C0kgq8'
+      break;
+      
     case '11':
         openid = 'oxI5ZwmSsJkP8BcnOoSgOcK2PADY';
         refresh_token = '25_Ir3WpPz6ID93PXBTRoNBf_mCwQsz51dsrEV1ntE2lOngAL7JsRKoteL8X-jCC6Y8XnovRAfk8vPyKnG9FFMx8rnqGNbalnCfNtcpJ1O3xvI'
@@ -102,4 +108,6 @@ router.get('/getUserInfo', async ctx => {
   }
 
 })
+
+
 module.exports = router;

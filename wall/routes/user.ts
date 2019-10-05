@@ -7,7 +7,7 @@ import { User } from '../utils/db/models/User' //玄学？加了import就不会�
 router.get("/get", async ctx => {
     let { openid } = await parseToken(ctx);
     let result, code;
-    
+
     try {
         result = await userDao.findOneUser(openid);
         code = 200;
@@ -22,13 +22,14 @@ router.get("/get", async ctx => {
     };
 
 })
-
-router.get("/set",async ctx => {
+//修改用户信息，就是修改性别
+router.get("/set", async ctx => {
     let { openid } = await parseToken(ctx);
     let { sex } = ctx.request.query;
     let result, code;
     try {
-        result = await userDao.updateSex(openid,sex);
+        await userDao.updateSex(openid, sex);
+        result = '修改性别成功'
         code = 200;
     } catch (err) {
         code = 500;
@@ -38,7 +39,7 @@ router.get("/set",async ctx => {
     ctx.body = {
         code,
         result
-        
+
     };
 })
 module.exports = router

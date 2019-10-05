@@ -10,9 +10,9 @@ router.get("/list", async ctx => {
     // console.log(ctx.request.query);
     
     let { openid } = await parseToken(ctx);
-    let { wish_where } = ctx.request.query;
+    let { wish_where ,curPage,pageSize} = ctx.request.query;
     let result, code;
-    try {
+    try { 
         result = await wishDao.showAllWish(openid, wish_where);
         code = 200;
     } catch (err) {
@@ -28,7 +28,7 @@ router.get("/list", async ctx => {
 //发布一个愿望，首页用
 router.post("/create", async ctx => {
     let { nickname, openid, headimgurl } = await parseToken(ctx);
-    let { wish_type, wish_content,wish_where } = ctx.request.body;
+    let { wish_type, wish_content,wish_where,contact,anonymous } = ctx.request.body;
     let code, result;
     let data = {
         nickname,
@@ -36,7 +36,9 @@ router.post("/create", async ctx => {
         headimgurl,
         wish_type,
         wish_content,
-        wish_where
+        wish_where,
+        contact,
+        anonymous
     };
     // console.log(data);
     try {
@@ -56,11 +58,12 @@ router.post("/create", async ctx => {
 
 //领取愿望，首页用
 router.get("/gain", async ctx => {
-    let { openid,nickname } = await parseToken(ctx);
+    let { openid,nickname ,headimgurl} = await parseToken(ctx);
     let { uuid } = ctx.request.query;
     let result, code;
     try {
-        result = await wishDao.gainWish(openid, nickname,uuid);
+        await wishDao.gainWish(openid, nickname,uuid,headimgurl);
+        result = '领取愿望成功'
         code = 200;
     } catch (err) {
         code = 500;
@@ -111,7 +114,7 @@ router.get("/remove",async ctx =>{
 //我发布的，个人主页用
 router.get("/iCreated",async ctx =>{
     let { openid } = await parseToken(ctx);
-    let result, code;
+    let result,code;
     try {
         result =await wishDao.showCreated(openid);
         code = 200;
@@ -141,5 +144,22 @@ router.get("/iGained",async ctx =>{
         result
     };
 })
+//查看一个愿望中 具体有谁在什么时间领取了这个愿望
+router.get("/showGainDetail",async ctx =>{
+    let { uuid } = ctx.request.query;
+    let result, code;
+    try {
+        result =await wishDao.showGainWishDetail(uuid);
+        code = 200;
+    } catch (err) {
+        code = 500;
+        result = err.message;
+    }
+    ctx.body = {
+        code,
+        result
+    };
+})
+
 
 module.exports = router

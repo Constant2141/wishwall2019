@@ -1,5 +1,5 @@
-import { Table, Column, Model, Max, AutoIncrement, Default } from 'sequelize-typescript'
-
+import { Table, Column, Model, Max, AutoIncrement, Default, AllowNull, DataType } from 'sequelize-typescript'
+const moment = require('moment');
 
 @Table
 export class Wish extends Model<Wish> {
@@ -9,49 +9,70 @@ export class Wish extends Model<Wish> {
   })
   wish_id: number                //每个愿望唯一id
 
-  @Column
+  @Column(DataType.STRING(128))
   openid: string   //发布者openid
 
-  @Column
-  uuid: string   
+  @Column(DataType.STRING(128))
+  uuid: string
 
-  @Column
-  headimgurl:string  
+  @Column(DataType.STRING(170))
+  headimgurl: string
 
-  @Column
-  nickname:string  //匿名或微信名
+  @Column(DataType.STRING(128))
+  nickname: string
 
-  @Column
+  // @AllowNull
+  @Column(DataType.STRING(128))
+  contact: string    //联系方式
+
+  @Column(DataType.STRING(128))
   picker_openid: string //领取者openid
 
-  @Column
+  @Column(DataType.STRING(128))
   wish_content: string
 
-  @Column
-  wish_type:string
+  @Column(DataType.STRING(128))
+  wish_type: string
 
-  @Column
-  wish_where:string
-
-  @Default(0)
-  @Column
-  wish_status:number  // 0 未被领取， 1 被领取，2 完成
+  @Column(DataType.STRING(128))
+  wish_where: string
 
   @Default(0)
   @Column
-  wish_many:number
+  wish_status: number  // 0 未被领取， 1 被领取，2 完成
+
+  @Default(0)
+  @Column
+  wish_many: number
 
   @Column
-  pick_time:Date
+  pick_time: Date
 
   @Column
-  finish_time:Date
+  finish_time: Date
 
-  @Default(false)
+  @Default(false)  //是否领取了，针对当前用户
   @Column
-  gainOrNot:boolean
+  gainOrNot: boolean
 
- 
+  @Default(false)  //此愿望是否是匿名发布的
+  @Column
+  anonymous: boolean
+
+
+  @Column({
+    get() {
+      return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD HH:mm:ss');
+    }
+  })
+  createdAt: Date
+
+  @Column({
+    get() {
+      return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD HH:mm:ss');
+    }
+  })
+  updatedAt: Date
 }
 
 

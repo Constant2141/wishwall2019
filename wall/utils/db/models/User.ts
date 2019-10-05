@@ -10,11 +10,11 @@ import { Table, Column, Model, Max, Length, DataType } from 'sequelize-typescrip
 })
 export class User extends Model<User> {
 
-  @Column({
-    primaryKey: true,
-    autoIncrement: true,
-  })
-  id: number
+  // @Column({
+  //   primaryKey: true,
+  //   autoIncrement: true,
+  // })
+  // id: number
 
   @Column({
     unique: true,

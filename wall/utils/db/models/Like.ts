@@ -1,5 +1,5 @@
 import { Table, Column, Model, DataType } from 'sequelize-typescript'
-
+const moment = require('moment');
 @Table
 export class Like extends Model<Like> {
   @Column({
@@ -11,8 +11,24 @@ export class Like extends Model<Like> {
   @Column
   openid: number
  
-  @Column
-  uuid:number
+  @Column(DataType.STRING(128))
+  uuid:string
+
+
+
+  @Column({
+    get() {
+      return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD HH:mm:ss');
+    }
+  })
+  createdAt: Date
+
+  @Column({
+    get() {
+      return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD HH:mm:ss');
+    }
+  })
+  updatedAt: Date
 }
 
 

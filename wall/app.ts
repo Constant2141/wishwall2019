@@ -42,8 +42,8 @@ app.use(async (ctx, next) => {
 // token错误拦截与过期
 app.use(async (ctx, next) => {
   if(ctx.header.authorization){
-    // console.log('验证头部存在');
-    // console.log(ctx.header.authorization);
+    console.log('验证头部存在');
+    console.log(ctx.header.authorization);
   }
   
   return next().catch(err => {
@@ -55,6 +55,9 @@ app.use(async (ctx, next) => {
           throw err;
       }
   });
+
+
+  
 });
 
 // 验证是否有在header中携带token

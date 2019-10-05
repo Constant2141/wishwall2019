@@ -11,12 +11,12 @@ let router = new Router();
 
 router.post('/addTreeHole', async ctx => {
   let { text } = ctx.request.body;
-  let user = await parseToken(ctx);
-  console.log(user, text);
+  let { openid } = await parseToken(ctx);
+  console.log(openid, text,'here');
 
-  addTreeHole(user.openid, text)
+  addTreeHole(openid, text)
 
-  ctx.body = ctx.request.body
+  ctx.body = '11'
 })
 
 router.get('/getMyTreeHoles', async ctx => {

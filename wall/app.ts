@@ -3,7 +3,6 @@ const app = new Koa()
 const views = require('koa-views')
 const json = require('koa-json')
 const koaError = require('koa-onerror')
-const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const db = require('./utils/db/')
 const koaJwt = require("koa-jwt");
@@ -16,10 +15,6 @@ const koaBody = require('koa-body');
 // error handler
 koaError(app)
 
-// middlewares
-app.use(bodyparser({
-  enableTypes:['json', 'form', 'text']
-}))
 app.use(json())
 app.use(logger())
 app.use(require('koa-static')(__dirname + '/public'))

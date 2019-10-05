@@ -10,7 +10,7 @@ const koaJwt = require("koa-jwt");
 const index = require('./routes/index') 
 const tokenSecret = "nwernwer";
 const cors = require('koa2-cors');
-
+const koaBody = require('koa-body');
 // error handler
 koaError(app)
 
@@ -22,7 +22,12 @@ app.use(json())
 app.use(logger())
 app.use(require('koa-static')(__dirname + '/public'))
 app.use(cors());
-
+app.use(koaBody({
+  multipart: true,
+  formidable: {
+      maxFileSize: 200*1024*1024    // 设置上传文件大小最大限制，默认2M
+  }
+}));
 app.use(views(__dirname + '/views', {
   extension: 'pug'
 }))

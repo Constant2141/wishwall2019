@@ -9,13 +9,6 @@ const updateSex = async (openid,sex) => {
     return result;
 }
 
-//找指定某个人的信息
-const findOneUser = async openid =>{
-    let result = User.findOne({where:{openid}})
-    return result;
-}
-
 module.exports = {
     updateSex,
-    findOneUser
 }

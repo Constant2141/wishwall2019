@@ -59,32 +59,23 @@ router.get('/getUserInfo', async ctx => {
 
   switch(userID){
     case '01':
-      openid = 'oxI5ZwhLofGBCN3l9PnHft2WfzBk';
-      refresh_token = '25_H1lClHnhJGAq7OgcRf73wMRWhNZpYjL8UPO_llFmIBQ6pB-0oAvSV0hGvCOnIB1ijPOdJuQl_RRgR6SO0MBylzZGl-Ffjfu8cod0Y6-lbrE'
+      openid = 'oO7BY6JRpJ26yi92rE77BEjdnSx0';//艹
+      refresh_token = '26_WHNVk-RYC9_6kuMFKW4DWa1uZ-W-PFJbDujE97UGEO5cH-wOmqbE1vhGhjLX5YQRoE_3joYkI5YjSR31ApDqWe_q1s5BfFMMWjb5i-3AJJY' 
       break;
     
     case '02':
-      openid = 'oxI5Zwkxn98aApWneqQ3PhpcqrS8';
-      refresh_token = '25_Jh1XMP9hdLqde1z5Tc0fLbwvzutbDkKi3udUX3bzdznHgO0_W46js8sTjKhuqV-HxACp5_B7loyfM787x95wU7rckEC_JEgJAsTAw13VSgE'
+      openid = 'oO7BY6J65sGvlImCzcGK6bFD6LTs';//holy
+      refresh_token = '26_OBZf3MJELgHDHSMER5o-Z8gi2ZlSW3pbtyirXMvOy2n7JGwfM96u4IV9tzqbRHO8rH1b41wro5S-BEHMkQTkScySoBO7SJNsjmEcYq6g4Wg'
       break;
     
-    case '03':
-      openid = 'oxI5ZwiKgzs1CC1tUZVBNNC_RSgY';
-      refresh_token = '25_VB1OmLTBai95kSdsI9hd5HfQQgiwWzKntCsH9n4oy-g-oiun0NVajKKLBm6jxcn0wM6o6RifYAVANbqkN-AaSZ7W9Jx4Ogg8KVTCGafd6Dk'
+    case '03': 
+      openid = 'oO7BY6MEb0D4AXnxHqNuL9_hlQbg'; //朕
+      refresh_token = '26_yVAg5Dwxopzu8tWm5PT-K844tl4ejfeHAzgQg54jN-8tCxqK7LxndrSiy62Qp8FbAziP041ofEnv4hHn-9-bD7Md4C5UzrSzpUmfs6ENcRs' 
       break;
     
     case '11':
-        openid = 'oxI5ZwmSsJkP8BcnOoSgOcK2PADY';
-        refresh_token = '25_Ir3WpPz6ID93PXBTRoNBf_mCwQsz51dsrEV1ntE2lOngAL7JsRKoteL8X-jCC6Y8XnovRAfk8vPyKnG9FFMx8rnqGNbalnCfNtcpJ1O3xvI'
-        break;
-    case '12':
-        openid = 'oxI5Zwo57627yT48UcOCyOEMkgJg';
-        refresh_token = '25_82cMDI_LjlHFkHUQEEWe5SrMHrgMmK502hnUZ3pm1bjKNhCoH5E4dm2XI4ZR9-JubIzD15w7Qi4fqbn0rGFpPDtcQnPFNKEOXPUsnCRiLn0'
-        break;
-
-    case '13':
-        openid = 'oxI5ZwuJFJ1Ft1ZyXAgvaYPbEUpk';
-        refresh_token = '25_FujjLPFnxKcQM9-rFShh2BoHZbRb44H_6FQC0zsQqET3hqP2mohL_yeY5udNEFQQqNl1gOgleyzsw6oJ1ZHfUZLok59sv92B9H71_2PIJDU'
+        openid = 'oO7BY6BmbF9GMgq3UYTPXRoaViNQ'; //奖励金
+        refresh_token = '26_YDqGJPgMlft-cCHJYDhNCddCT3rNxCru1kSBxNGhvD71vC8NnDM2nFsLLyV7DlXTEXi2aK-CuYjDZFClOe_qhlLc35eqbQNb6ec84GpeOTQ'
         break;
 
     default :

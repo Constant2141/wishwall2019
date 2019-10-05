@@ -1,5 +1,4 @@
 import { Wish } from '../utils/db/models/Wish'
-import { Like } from '../utils/db/models/Like'
 import { Gain } from '../utils/db/models/Gain'
 const Uuid = require("uuid");
 
@@ -139,7 +138,7 @@ const showGained = async (openid) => {
 }
 
 
-//查看一个愿望中 具体是谁在什么时间领取了这个愿望
+//查看一个愿望中 具体是谁在什么时间领取了这个愿望(不妥)
 const showGainWishDetail = async (uuid) => {
     let data = await Gain.findAll({
         order: [

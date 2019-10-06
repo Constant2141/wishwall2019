@@ -84,7 +84,10 @@ export async function getAllTreeHoles(openid,countPerPage,currentPage) {
                 let comments : Array<string> = [];
     
                 r.forEach(val=>{
-                  comments.push(val.comment)
+                  let c :any= {}
+                  c.comment = val.comment;
+                  c.sex = val.sex
+                  comments.push(c)
                 })
       
                 res[i]['comments'] = comments;

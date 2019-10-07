@@ -2,11 +2,12 @@ import { User } from './models/User'
 import { Wish } from './models/Wish'
 import { Gain } from './models/Gain'
 import { Like } from './models/Like'
+import { Star } from './models/Star'
 const sequelize = require('./connect')
 
 
 
-sequelize.addModels([User, Wish,Gain,Like]);
+sequelize.addModels([User, Wish,Gain,Like,Star]);
 // sequelize.addModels([User]);
 
 sequelize.sync({force:false}).then(res => {

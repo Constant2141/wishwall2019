@@ -4,9 +4,8 @@ const Uuid = require("uuid");
 
 //获得某个校区的愿望,按发布时间排序
 const showAllWish = async (openid, wish_where,curPage,pageSize) => {
-
-    curPage = 1;
-    pageSize = 10;
+    if (!curPage) curPage = 1;
+    if(!pageSize)  pageSize = 10;
 
     let wishList = await Wish.findAll({
         order: [

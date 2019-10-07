@@ -3,7 +3,7 @@ const app = new Koa()
 const views = require('koa-views')
 const json = require('koa-json')
 const koaError = require('koa-onerror')
-const bodyparser = require('koa-bodyparser')
+// const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const db = require('./utils/db/')
 const koaJwt = require("koa-jwt");
@@ -15,19 +15,21 @@ const koaBody = require('koa-body');
 koaError(app)
 
 // middlewares
-app.use(bodyparser({
-  enableTypes:['json', 'form', 'text']
-}))
+// app.use(bodyparser({
+//   enableTypes:['json', 'form', 'text']
+// }))
 app.use(json())
 app.use(logger())
 app.use(require('koa-static')(__dirname + '/public'))
 app.use(cors());
+
 app.use(koaBody({
   multipart: true,
   formidable: {
       maxFileSize: 200*1024*1024    // 设置上传文件大小最大限制，默认2M
   }
 }));
+
 app.use(views(__dirname + '/views', {
   extension: 'pug'
 }))
@@ -47,8 +49,7 @@ app.use(async (ctx, next) => {
 // token错误拦截与过期
 app.use(async (ctx, next) => {
   if(ctx.header.authorization){
-    console.log('验证头部存在');
-    console.log(ctx.header.authorization);
+    // console.log(ctx.header.authorization);
   }
   
   return next().catch(err => {

@@ -13,7 +13,7 @@ router.get("/list", async ctx => {
     let { wish_where ,curPage,pageSize} = ctx.request.query;
     let result, code;
     try { 
-        result = await wishDao.showAllWish(openid, wish_where);
+        result = await wishDao.showAllWish(openid, wish_where,curPage,pageSize);
         code = 200;
     } catch (err) {
         code = 500;

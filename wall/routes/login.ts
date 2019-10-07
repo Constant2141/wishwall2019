@@ -1,7 +1,7 @@
 const Router = require('koa-router');
 const rp = require('request-promise');
 const wxConfig = require('../utils/wx/config');
-const getToken = require('../utils/jwt/getToken')
+const getToken = require('../utils/jwt/getToken');
 import { getUserInfo } from '../utils/wx/index';
 import { addUser } from '../Dao/loginDao';
 
@@ -40,8 +40,8 @@ router.get('/test', async ctx => {
   .then(data => {
     
     return JSON.parse(data)
-  }) //这个，最终拿到用户的详细信息
-
+  })
+  
   User = await addUser(User)
 
   User.token =await getToken(User)
@@ -73,6 +73,11 @@ router.get('/getUserInfo', async ctx => {
       refresh_token = '26_yVAg5Dwxopzu8tWm5PT-K844tl4ejfeHAzgQg54jN-8tCxqK7LxndrSiy62Qp8FbAziP041ofEnv4hHn-9-bD7Md4C5UzrSzpUmfs6ENcRs' 
       break;
     
+    case '04':
+      openid = 'oO7BY6P--E2z-Q81w5lp6GpST-XM';
+      refresh_token = '26_VXSzMP3NrCwpPoEGfbwszgkrmQK4D3a6wErDSn3b0VkqRug4h3J2nB9gqRuz6M9lzBFDISA-oirdZPfLYUIAh4Vbf_BozL-a8REN8C0kgq8'
+      break;
+      
     case '11':
         openid = 'oO7BY6BmbF9GMgq3UYTPXRoaViNQ'; //奖励金
         refresh_token = '26_YDqGJPgMlft-cCHJYDhNCddCT3rNxCru1kSBxNGhvD71vC8NnDM2nFsLLyV7DlXTEXi2aK-CuYjDZFClOe_qhlLc35eqbQNb6ec84GpeOTQ'
@@ -92,4 +97,6 @@ router.get('/getUserInfo', async ctx => {
   }
 
 })
+
+
 module.exports = router;

@@ -4,9 +4,10 @@ const moment = require('moment');
 export class Gain extends Model<Gain> {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
+    type: DataType.STRING(190)
   })
-  id: number
+  @Column(DataType.STRING(128))
+  uuid:string
 
   @Column(DataType.STRING(128))
   openid: string
@@ -16,10 +17,9 @@ export class Gain extends Model<Gain> {
 
   @Column(DataType.STRING(128))
   nickname:string
+  
 
-
-  @Column(DataType.STRING(128))
-  uuid:string
+ 
 
 
 

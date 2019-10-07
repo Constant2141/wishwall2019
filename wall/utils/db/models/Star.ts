@@ -1,26 +1,20 @@
 import { Table, Column, Model, Max, AutoIncrement, Default, AllowNull, DataType } from 'sequelize-typescript'
-import { BlobDataType } from 'sequelize/types';
 const moment = require('moment');
 
 @Table
 export class Star extends Model<Star> {
-  @Column({ //应该删掉了
+  @Column({
     primaryKey: true,
-    autoIncrement: true,
+    type: DataType.STRING(128)
   })
-  star_id: number               
+  uuid: string
+
 
   @Column(DataType.STRING(128))
   openid: string   
 
   @Column(DataType.STRING(128))
-  uuid: string
-
-  @Column(DataType.STRING(128))
   title: string
-
-  @Column(DataType.STRING(128))
-  content: string
 
   @Column(DataType.STRING(150))
   bgPic: string

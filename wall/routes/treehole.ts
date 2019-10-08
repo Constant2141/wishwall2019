@@ -6,6 +6,7 @@ import { getMyTreeHoles } from '../Dao/treeholeDao';
 import { getAllTreeHoles } from '../Dao/treeholeDao';
 import { addLikes } from '../Dao/treeholeDao';
 import { addTreeHoleComment } from '../Dao/treeholeDao';
+import { countMyTreeHoles } from '../Dao/treeholeDao';
 
 let router = new Router();
 
@@ -17,6 +18,14 @@ router.post('/addTreeHole', async ctx => {
   addTreeHole(user.openid, text)
 
   ctx.body = text
+})
+
+router.get('/countMyTreeHoles', async ctx => {
+  let user = await parseToken(ctx);
+
+  let count = await countMyTreeHoles(user.openid);
+
+  ctx.body = await count;
 })
 
 router.get('/getMyTreeHoles', async ctx => {

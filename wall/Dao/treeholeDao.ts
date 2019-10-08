@@ -46,8 +46,33 @@ export async function  getMyTreeHoles(openid) {
     console.log('openid is null or {}');
   }else{
     result = await TreeHole.findAll({
-      where: {openid}
-    }).then().catch(e=>{
+      where: {openid},
+      raw: true
+    }).then(async arr =>{
+      let i = arr.length;
+      while(i--){
+        let thole:any = arr[i];
+        let treeholeId: string = thole.treeholeId;
+        console.log(treeholeId,'treeholeId is here <<===');
+        let comments: Array<object> = [];
+        
+        await TreeHoleComment.findAll({
+          where:{treeholeId},
+          raw: true
+        }).then(arr => {
+          arr.forEach(val => {
+            let obj :any= {}
+            obj.comment = val.comment;
+            obj.sex = val.sex;
+            comments.push(obj)
+          })
+          return ;
+        })
+
+        thole.comments = comments;
+      }
+      return await arr;
+    }).catch(e=>{
       console.log(e);
     })
   }
@@ -147,6 +172,18 @@ export async function addTreeHoleComment(text,sex,comment,treeholeId){
 
   return await result
 
+}
+
+export async function countMyTreeHoles(openid){
+  let count = await TreeHole.findAll({
+    where:{openid},
+    raw:true
+  }).then(res=>{
+    if(res.length) return res.length
+    return 0
+  }).catch(e=>console.log(e));
+
+  return await count
 }
 
 function isNullOrUndefined(value):boolean {

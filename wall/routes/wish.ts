@@ -119,7 +119,7 @@ router.get("/iCreated",async ctx =>{
         result =await wishDao.showCreated(openid);
         code = 200;
     } catch (err) {
-        code = 500;
+        code = 500; 
         result = err.message;
     }
     ctx.body = {
@@ -144,22 +144,7 @@ router.get("/iGained",async ctx =>{
         result
     };
 })
-//查看一个愿望中 具体有谁在什么时间领取了这个愿望
-router.get("/showGainDetail",async ctx =>{
-    let { uuid } = ctx.request.query;
-    let result, code;
-    try {
-        result =await wishDao.showGainWishDetail(uuid);
-        code = 200;
-    } catch (err) {
-        code = 500;
-        result = err.message;
-    }
-    ctx.body = {
-        code,
-        result
-    };
-})
+
 
 
 module.exports = router

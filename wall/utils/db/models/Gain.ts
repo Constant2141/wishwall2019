@@ -1,11 +1,9 @@
-import { Table, Column, Model, ForeignKey, DataType } from 'sequelize-typescript'
+import { Table, Column, Model, ForeignKey, DataType, BelongsTo } from 'sequelize-typescript'
+import { Wish } from './Wish';
 const moment = require('moment');
 @Table
 export class Gain extends Model<Gain> {
-  @Column({
-    primaryKey: true,
-    type: DataType.STRING(190)
-  })
+  @ForeignKey(() => Wish)
   @Column(DataType.STRING(128))
   uuid:string
 
@@ -17,11 +15,9 @@ export class Gain extends Model<Gain> {
 
   @Column(DataType.STRING(128))
   nickname:string
-  
 
- 
-
-
+  @BelongsTo(() => Wish,{as:'w'})
+  wish: Wish;
 
   @Column({
     get() {

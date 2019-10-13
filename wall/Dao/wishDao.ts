@@ -1,22 +1,34 @@
 import { Wish } from '../utils/db/models/Wish'
 import { Gain } from '../utils/db/models/Gain'
+import { Sequelize } from 'sequelize/types';
 const Uuid = require("uuid");
 
 //获得某个校区的愿望,按发布时间排序
-const showAllWish = async (openid, wish_where,curPage,pageSize) => {
+const showAllWish = async (openid, wish_where, curPage, pageSize) => {
     if (!curPage) curPage = 1;
-    if(!pageSize)  pageSize = 10;
+    if (!pageSize) pageSize = 10;
+    let wishList;
+    if (wish_where) {
+        wishList = await Wish.findAll({
+            order: [
+                ['createdAt', 'DESC']
+            ],
+            where: {
+                wish_where,
+            },
+            offset: (curPage - 1) * pageSize,
+            limit: pageSize
+        })
+    } else {
+        wishList = await Wish.findAll({
+            order: [
+                ['createdAt', 'DESC']
+            ],
+            offset: (curPage - 1) * pageSize,
+            limit: pageSize
+        })
+    }
 
-    let wishList = await Wish.findAll({
-        order: [
-            ['createdAt', 'DESC']
-        ],
-        where: {
-            wish_where,
-        },
-        offset:(curPage - 1) * pageSize,
-        limit:pageSize
-    })
 
     let gainList = await Gain.findAll({ where: { openid } });
     gainList.forEach(g => {
@@ -41,12 +53,12 @@ const createWish = async wish => {
         wish_content,
         wish_type,
         wish_where,
-        contact,  
+        contact,
         anonymous
     } = wish;
 
 
-    
+
     let data = new Wish({
         nickname,
         openid,
@@ -63,14 +75,14 @@ const createWish = async wish => {
 }
 
 //男生领取愿望
-const gainWish = async (openid, nickname, uuid,headimgurl) => {
+const gainWish = async (openid, nickname, uuid, headimgurl) => {
 
 
     //更新wish中的领取人，领取时间，愿望状态
     await Wish.update({
         picker_openid: openid,
         pick_time: new Date(),
-        wish_status: 1,
+        // wish_status: 1,
     }, {
             where: {
                 uuid
@@ -94,7 +106,7 @@ const gainWish = async (openid, nickname, uuid,headimgurl) => {
 //女生确定愿望已经完成
 const finishWish = async (uuid) => {
     Wish.update({
-        wish_status: 2,
+        wish_status: 1,
         finish_time: new Date()
     }, { where: { uuid } })
 }
@@ -106,6 +118,7 @@ const removeWish = async (uuid) => {
 
 //个人主页————查看我发布的愿望
 const showCreated = async (openid) => {
+
     let wishList = await Wish.findAll({
         order: [
             ['createdAt', 'DESC']
@@ -113,6 +126,13 @@ const showCreated = async (openid) => {
         where: {
             openid,
         },
+        attributes: ['createdAt', 'uuid', 'contact', 'wish_content', 'wish_type', 'wish_where', 'wish_status', 'wish_many', 'anonymous'],
+       
+        include: [{
+            model: Gain,
+            attributes:[['createdAt','pick_time'],'headimgurl','nickname']
+        }]
+
     })
 
     return wishList
@@ -120,36 +140,44 @@ const showCreated = async (openid) => {
 
 //个人主页————查看我领取的愿望
 const showGained = async (openid) => {
-    return new Promise(async (resolve, reject) => {
-        var arr = [];
-        let list = await Gain.findAll({ where: { openid } })
-        list.map(async (ii, index) => {
-            let e = await Wish.findOne({ raw: true, where: { uuid: ii.uuid } })
-            if (e) {
-                await arr.push(e)
-            }
-            if (index == list.length - 1) {
-                console.log(arr);
-                resolve(arr)
-            }
-        })
-    })
-}
-
-
-//查看一个愿望中 具体是谁在什么时间领取了这个愿望(不妥)
-const showGainWishDetail = async (uuid) => {
-    let data = await Gain.findAll({
+    // return new Promise(async (resolve, reject) => {
+    //     var arr = [];
+    //     let list = await Gain.findAll({ where: { openid } })
+    //     list.map(async (ii, index) => {
+    //         let e = await Wish.findOne({ raw: true, where: { uuid: ii.uuid } })
+    //         if (e) {
+    //             await arr.push(e)
+    //         }
+    //         if (index == list.length - 1) {
+    //             // console.log(arr);
+    //             resolve(arr)
+    //         }
+    //     })
+    // })
+    let gainList = await Gain.findAll({
         order: [
             ['createdAt', 'DESC']
         ],
         where: {
-            uuid,
+            openid,
         },
+        attributes: [['createdAt','pick_time']],
+       
+        include: [{
+            // through: { attributes: [] }, 
+            model: Wish,
+            as:'w',
+            attributes: [ 'uuid', 'contact', 'wish_content', 'wish_type', 'wish_where', 'wish_status', 'wish_many', 'anonymous'],
+        }],
+        // raw:true
+
     })
 
-    return data
+    return gainList
+
 }
+
+
 
 module.exports = {
     createWish,
@@ -159,5 +187,4 @@ module.exports = {
     removeWish,
     showCreated,
     showGained,
-    showGainWishDetail
 }

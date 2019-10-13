@@ -1,4 +1,5 @@
-import { Table, Column, DataType, Model, Default} from 'sequelize-typescript';
+import { Table, Column, DataType, Model, Default, ForeignKey, BelongsTo} from 'sequelize-typescript';
+import { Star } from './Star';
 const moment = require('moment');
 
 
@@ -9,7 +10,7 @@ export class StarComment extends Model<StarComment> {
     autoIncrement: true,
   })
   commentid: number        //用户点赞  
-
+  
   @Column(DataType.STRING(128))
   uuid: string    //星球的id
 

@@ -1,18 +1,22 @@
-import { Table, Column, Model, Max, AutoIncrement, Default, AllowNull, DataType } from 'sequelize-typescript'
+import { Table, Column, Model, Max, AutoIncrement, Default, AllowNull, DataType, HasMany } from 'sequelize-typescript'
+import { Gain } from './Gain';
 const moment = require('moment');
 
 @Table
 export class Wish extends Model<Wish> {
-  @Column({
-    primaryKey: true,
-    autoIncrement: true,
-  })
-  wish_id: number                //每个愿望唯一id
+  // @Column({
+  //   primaryKey: true,
+  //   autoIncrement: true,
+  // })
+  // wish_id: number                //每个愿望唯一id
 
   @Column(DataType.STRING(128))
   openid: string   //发布者openid
 
-  @Column(DataType.STRING(128))
+  @Column({
+    primaryKey: true,
+    type: DataType.STRING(190)
+  })
   uuid: string
 
   @Column(DataType.STRING(170))
@@ -39,7 +43,7 @@ export class Wish extends Model<Wish> {
 
   @Default(0)
   @Column
-  wish_status: number  // 0 未被领取， 1 被领取，2 完成
+  wish_status: number  // 0 未被完成， 1  完成
 
   @Default(0)
   @Column
@@ -59,6 +63,9 @@ export class Wish extends Model<Wish> {
   @Column
   anonymous: boolean
 
+
+  @HasMany(() => Gain)
+  gain: Gain[];
 
   @Column({
     get() {

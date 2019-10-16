@@ -1,6 +1,6 @@
 import { Wish } from '../utils/db/models/Wish'
 import { Gain } from '../utils/db/models/Gain'
-import { Sequelize } from 'sequelize/types';
+const Sequelize = require('sequelize');
 const Uuid = require("uuid");
 
 //获得某个校区的愿望,按发布时间排序
@@ -98,7 +98,7 @@ const gainWish = async (openid, nickname, uuid, headimgurl) => {
         nickname,
         openid,
         uuid,
-        headimgurl
+        headimgurl,
     });
     return await newGain.save();
 };
@@ -128,10 +128,6 @@ const showCreated = async (openid) => {
         },
         attributes: ['createdAt', 'uuid', 'contact', 'wish_content', 'wish_type', 'wish_where', 'wish_status', 'wish_many', 'anonymous'],
        
-        include: [{
-            model: Gain,
-            attributes:[['createdAt','pick_time'],'headimgurl','nickname']
-        }]
 
     })
 
@@ -140,20 +136,6 @@ const showCreated = async (openid) => {
 
 //个人主页————查看我领取的愿望
 const showGained = async (openid) => {
-    // return new Promise(async (resolve, reject) => {
-    //     var arr = [];
-    //     let list = await Gain.findAll({ where: { openid } })
-    //     list.map(async (ii, index) => {
-    //         let e = await Wish.findOne({ raw: true, where: { uuid: ii.uuid } })
-    //         if (e) {
-    //             await arr.push(e)
-    //         }
-    //         if (index == list.length - 1) {
-    //             // console.log(arr);
-    //             resolve(arr)
-    //         }
-    //     })
-    // })
     let gainList = await Gain.findAll({
         order: [
             ['createdAt', 'DESC']
@@ -161,19 +143,30 @@ const showGained = async (openid) => {
         where: {
             openid,
         },
-        attributes: [['createdAt','pick_time']],
-       
+        attributes: [
+        Sequelize.col('w.createdAt'),
+        Sequelize.col('w.uuid'),
+        Sequelize.col('w.contact'),
+        Sequelize.col('w.wish_content'),
+        Sequelize.col('w.wish_type'),
+        Sequelize.col('w.wish_where'),
+        Sequelize.col('w.wish_status'),
+        Sequelize.col('w.wish_many'),
+        Sequelize.col('w.anonymous'),
+    ],
         include: [{
-            // through: { attributes: [] }, 
             model: Wish,
             as:'w',
-            attributes: [ 'uuid', 'contact', 'wish_content', 'wish_type', 'wish_where', 'wish_status', 'wish_many', 'anonymous'],
+            attributes:[]
         }],
-        // raw:true
-
+        raw:true
     })
 
     return gainList
+
+
+    
+
 
 }
 

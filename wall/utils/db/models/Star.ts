@@ -1,4 +1,5 @@
-import { Table, Column, Model, Max, AutoIncrement, Default, AllowNull, DataType } from 'sequelize-typescript'
+import { Table, Column, Model, Max, AutoIncrement, Default, AllowNull, DataType, HasMany } from 'sequelize-typescript'
+import { StarComment } from './StarComment';
 const moment = require('moment');
 
 @Table
@@ -22,7 +23,9 @@ export class Star extends Model<Star> {
   @Default(0)
   @Column
   hot: number
-
+  
+  @HasMany(() => StarComment)
+  starComment: StarComment[];
 
   @Column({
     get() {

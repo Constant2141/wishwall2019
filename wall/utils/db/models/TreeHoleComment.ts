@@ -19,9 +19,6 @@ export class TreeHoleComment extends Model<TreeHoleComment> {
   })
   treeholeId: string
 
-  @Column(DataType.STRING(140))
-  text: string
-
   @Column
   sex: number
 

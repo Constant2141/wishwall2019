@@ -1,76 +1,129 @@
-const Router = require('koa-router');
-const parseToken = require('../utils/jwt/parseToken');
+const Router = require('koa-router')
+    , parseToken = require('../utils/jwt/parseToken')
+    , router = new Router();
 
-import { addTreeHole } from '../Dao/treeholeDao';
-import { getMyTreeHoles } from '../Dao/treeholeDao';
-import { getAllTreeHoles } from '../Dao/treeholeDao';
-import { addLikes } from '../Dao/treeholeDao';
-import { addTreeHoleComment } from '../Dao/treeholeDao';
-import { countMyTreeHoles } from '../Dao/treeholeDao';
-
-let router = new Router();
+import { addTreeHole
+       , getMyTreeHoles
+       , getAllTreeHoles
+       , addLikes
+       , addTreeHoleComment
+       , countMyTreeHoles } from '../Dao/treeholeDao';
 
 router.post('/addTreeHole', async ctx => {
-  let { text } = ctx.request.body;
-  let user = await parseToken(ctx);
-  console.log(user, text);
+  let { text }: { text: string } = ctx.request.body
+    , { openid }: { openid: string } = await parseToken(ctx)
+    , code: number = 500
+    , result: object = {};
 
-  addTreeHole(user.openid, text)
-
-  ctx.body = text
-})
-
-router.get('/countMyTreeHoles', async ctx => {
-  let user = await parseToken(ctx);
-
-  let count = await countMyTreeHoles(user.openid);
-
-  ctx.body = await count;
+  try{
+    result =await addTreeHole(openid, text)
+    code = 200
+  }catch(err) {
+    result = err.message
+    code = 500
+  };
+  ctx.body =await {
+    code,
+    result,
+  }
 })
 
 router.get('/getMyTreeHoles', async ctx => {
-  let user = await parseToken(ctx);
+  let { openid } = await parseToken(ctx)
+    , code: number = 500
+    , result: Array<Object>;
 
-  let mytreeholes = await getMyTreeHoles(user.openid);
+  try{
+    result = await getMyTreeHoles(openid);
+    code = 200
+  }catch(err) {
+    result = err.message
+    code = 500
+  }
 
-  ctx.body =await mytreeholes;
+  ctx.body =await {
+    code,
+    result
+  };
 })
 
 router.get('/getAllTreeHoles', async ctx => {
 
-  let {countPerPage,currentPage} = ctx.request.query;
+  let { countPerPage, currentPage } = ctx.request.query
+    , { openid } = await parseToken(ctx)
+    , code: number = 500
+    , result: Array<Object>;
   
-  let user = await parseToken(ctx);
+  try{
+    result = await getAllTreeHoles(openid, parseInt(countPerPage), parseInt(currentPage));
+    code = 200
+  }catch(err) {
+    result = err.message
+    code = 500
+  }
 
-  let alltreeholes = await getAllTreeHoles(user.openid,parseInt(countPerPage),parseInt(currentPage));
-
-  ctx.body =await alltreeholes;
+  ctx.body =await {
+    code,
+    result
+  };
 })
 
 router.post('/addLikes', async ctx => {
-  let { treeholeId } = ctx.request.body;
+  let { treeholeId } = ctx.request.body
+    , code = 500
+    , result: Boolean;
 
-  let res = await addLikes(treeholeId);
-  
-  if(await res != null && res != undefined){
-    ctx.status = 200, ctx.body = 'success'
-  }else{
-    ctx.status = 500, ctx.body = 'error'
+  try{
+    result = await addLikes(treeholeId)
+    code = 200
+  }catch(err) {
+    result = err.message
+    code = 500
   }
-
+  
+  ctx.body = await {
+    code,
+    result
+  }
 })
 
 router.post('/addTreeHoleComment', async ctx => {
-  let { comment,treeholeId,text } = ctx.request.body;
+  let { comment, treeholeId } = ctx.request.body
+    , { sex } = await parseToken(ctx)
+    , code = 500
+    , result: Boolean;
 
-  let user = await parseToken(ctx);
+  try{
+    result = await addTreeHoleComment(sex, comment, treeholeId);
+    code = 200
+  }catch(err) {
+    result = err.message;
+    code = 500
+  }
 
-  let res = await addTreeHoleComment(text,user.sex,comment,treeholeId);
-
-  if(await res != null && res != undefined){
-    ctx.status = 200, ctx.body = 'success'
-  }else{
-    ctx.status = 500, ctx.body = 'error'
+  ctx.body = await {
+    code,
+    result
   }
 })
+
+router.get('/countMyTreeHoles', async ctx => {
+  let { openid } = await parseToken(ctx)
+    , code = 500
+    , result: Number;
+
+  try{
+    result = await countMyTreeHoles(openid);
+    code = 200
+  }catch(err) {
+    result = err.message
+    code = 500
+  }
+
+  ctx.body = await {
+    code,
+    result
+  };
+})
+
 module.exports = router;

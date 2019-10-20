@@ -8,6 +8,7 @@ export class StarComment extends Model<StarComment> {
   @Column({
     primaryKey : true,
     autoIncrement: true,
+    // type: DataType.INTEGER
   })
   commentid: number        //用户点赞  
   
@@ -15,8 +16,8 @@ export class StarComment extends Model<StarComment> {
   @Column(DataType.STRING(128))
   uuid: string    //星球的id
 
+  // @Column(DataType.INTEGER)
   @ForeignKey(() => StarComment)
-  @Column(DataType.INTEGER())
   ccid: number    //原来的评论的id，用于评论的评论
 
   @Column(DataType.STRING(128))
@@ -54,7 +55,7 @@ export class StarComment extends Model<StarComment> {
   fatherComment: StarComment;
 
   @HasMany(() => StarComment)
-  starComment: StarComment[];
+  starComments: StarComment[];
  
   @Column({
     get() {

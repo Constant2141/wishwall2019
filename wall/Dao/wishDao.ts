@@ -105,6 +105,8 @@ const gainWish = async (openid, nickname, uuid, headimgurl) => {
 
 //女生确定愿望已经完成
 const finishWish = async (uuid) => {
+    // console.log('有执行吗');
+    
     Wish.update({
         wish_status: 1,
         finish_time: new Date()
@@ -127,7 +129,11 @@ const showCreated = async (openid) => {
             openid,
         },
         attributes: ['createdAt', 'uuid', 'contact', 'wish_content', 'wish_type', 'wish_where', 'wish_status', 'wish_many', 'anonymous'],
-       
+        include: [{
+            model: Gain,
+            // as: 'g',
+            attributes: [['createdAt','pick_time'],'headimgurl','nickname']
+        }],
 
     })
 
@@ -144,28 +150,28 @@ const showGained = async (openid) => {
             openid,
         },
         attributes: [
-        Sequelize.col('w.createdAt'),
-        Sequelize.col('w.uuid'),
-        Sequelize.col('w.contact'),
-        Sequelize.col('w.wish_content'),
-        Sequelize.col('w.wish_type'),
-        Sequelize.col('w.wish_where'),
-        Sequelize.col('w.wish_status'),
-        Sequelize.col('w.wish_many'),
-        Sequelize.col('w.anonymous'),
-    ],
+            Sequelize.col('w.createdAt'),
+            Sequelize.col('w.uuid'),
+            Sequelize.col('w.contact'),
+            Sequelize.col('w.wish_content'),
+            Sequelize.col('w.wish_type'),
+            Sequelize.col('w.wish_where'),
+            Sequelize.col('w.wish_status'),
+            Sequelize.col('w.wish_many'),
+            Sequelize.col('w.anonymous'),
+        ],
         include: [{
             model: Wish,
-            as:'w',
-            attributes:[]
+            as: 'w',
+            attributes: []
         }],
-        raw:true
+        raw: true
     })
 
     return gainList
 
 
-    
+
 
 
 }

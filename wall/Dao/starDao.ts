@@ -161,7 +161,7 @@ const myRelated = async (openid) => {
         include: [{
             model: StarComment,
             as:'fc',
-            attributes:['nickname','comment'],
+            attributes:['nickname','comment','sex'],
             include:[{
                 model:Star,
                 as:'fs',
@@ -196,7 +196,6 @@ const myCreated = async(openid) =>{
     return await data
 }
 
-
 //我的评论
 const myComment = async(openid) =>{
     let data = await StarComment.findAll({
@@ -210,7 +209,7 @@ const myComment = async(openid) =>{
         include:[{
             model:StarComment,
             as:'fc',
-            attributes:['nickname','comment','likes'],
+            attributes:['nickname','comment','likes','sex'],
             include:[{
                 model:Star,
                 as:'fs',

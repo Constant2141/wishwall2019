@@ -55,9 +55,11 @@ router.post("/create", async ctx => {
         result
     };
 });
-
+ 
 //领取愿望，首页用
 router.get("/gain", async ctx => {
+    console.log('请求进来了吗');
+    
     let { openid,nickname ,headimgurl} = await parseToken(ctx);
     let { uuid } = ctx.request.query;
     let result, code;
@@ -77,6 +79,9 @@ router.get("/gain", async ctx => {
 
 //女生确定愿望已经完成，个人主页用
 router.get("/finish",async ctx =>{
+    console.log('看这里');
+    console.log(ctx.request.query);
+    
     let { uuid } = ctx.request.query;
     let result, code;
     try {

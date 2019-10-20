@@ -12,7 +12,7 @@ export class TreeHole extends Model<TreeHole> {
     autoIncrement: true,
   })
   id: number
-
+  
   @Column({
     primaryKey: true,
     type: DataType.STRING(190)

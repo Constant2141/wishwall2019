@@ -16,8 +16,11 @@ export class Gain extends Model<Gain> {
   @Column(DataType.STRING(128))
   nickname:string
 
+
   @BelongsTo(() => Wish,{as:'w'})
   wish: Wish;
+
+
 
   @Column({
     get() {

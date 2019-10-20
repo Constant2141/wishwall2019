@@ -32,12 +32,19 @@ router.post("/create", async ctx => {
 
 
 //添加评论，包含两种功能，根据传参不同决定
+/**
+ * 如果是直接回复在超话下的就发送   uuid和comment
+ * 如果是发送在别人的回复下的就发送   commentid(ccid) openid(ccopenid)和comment
+ */
 router.post("/addComment", async ctx => {
     let user = await parseToken(ctx);
-    let { uuid,commentid,comment } = ctx.request.body;
+    let { uuid,commentid,comment ,openid} = ctx.request.body;
+
+    
+    
     let result, code;
     try { 
-        await starDao.addComment(user, uuid,commentid,comment);
+        await starDao.addComment(user, uuid,comment,commentid,openid);
         result = 'addcomment success'
         code = 200;
     } catch (err) {
@@ -71,7 +78,7 @@ router.get("/addLike", async ctx => {
 
 
 //展示超话列表
-router.get("/list", async ctx => {
+router.get("/list", async ctx => {  
     let {curPage,pageSize,flag} = ctx.request.query;
     let result, code;
     try { 
@@ -123,4 +130,78 @@ router.get("/showComment", async ctx => {
         result
     };
 });
+
+//删除评论
+router.get("/removeComment", async ctx => {
+    let {commentid} = ctx.request.query;
+    let result, code;
+    try { 
+        await starDao.removeComment(commentid);
+        result ='remove comment success'
+        code = 200;
+    } catch (err) {
+        code = 500;
+        result = err.message;
+    }
+    ctx.body = {
+        code,
+        result
+    };
+});
+
+//与我有关
+router.get("/myRelated", async ctx => {
+    let { openid } = await parseToken(ctx);
+    let result, code;
+    try { 
+        result = await starDao.myRelated(openid);
+        code = 200;
+    } catch (err) {
+        code = 500;
+        result = err.message;
+    }
+    ctx.body = {
+        code,
+        result
+    };
+});
+
+
+
+//我的发布
+router.get("/myCreated", async ctx => {
+    let { openid } = await parseToken(ctx);
+    let result, code;
+    try { 
+        result = await starDao.myCreated(openid);
+        code = 200;
+    } catch (err) {
+        code = 500;
+        result = err.message;
+    }
+    ctx.body = {
+        code,
+        result
+    };
+});
+
+
+
+//我的评论
+router.get("/myComment", async ctx => {
+    let { openid } = await parseToken(ctx);
+    let result, code;
+    try { 
+        result = await starDao.myComment(openid);
+        code = 200;
+    } catch (err) {
+        code = 500;
+        result = err.message;
+    }
+    ctx.body = {
+        code,
+        result
+    };
+});
+
 module.exports = router

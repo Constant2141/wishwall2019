@@ -1,6 +1,6 @@
 import { Star } from '../utils/db/models/Star'
 import { StarComment } from '../utils/db/models/StarComment'
-import { log } from 'util';
+const Sequelize = require('sequelize');
 const Uuid = require("uuid");
 const fs = require('fs')
 const path = require('path')
@@ -19,11 +19,12 @@ const uploadfile = async (bgPic, uuid) => {
 
     return filePath
 
-}
+} 
 //发布一个超话
 const createStar = async data => {
     let { title, comment, bgPic, user } = data;
     let { openid } = user
+    
 
     let uuid = Uuid.v4()
     let ccid = null
@@ -33,9 +34,9 @@ const createStar = async data => {
         title, uuid, openid, bgPic: path
     });
 
-    await addComment(user, uuid, ccid, comment)      //创建者发布时的内容就是第一条评论
+    await addComment(user, uuid, comment,ccid)      //创建者发布时的内容就是第一条评论
 
-
+ 
 }
 //展示超话列表，flag为1最新排序；0热度排序
 const showAllStar = async (curPage, pageSize, flag) => {
@@ -69,12 +70,25 @@ const showAllStar = async (curPage, pageSize, flag) => {
     }
     return list
 }
-//创建评论
-const addComment = async (user, uuid, commentid, comment) => {
-    let { openid, nickname, headimgurl, sex } = user
+//创建评论,
+const addComment = async (user,uuid,comment, commentid?,openid?) => {
+
+    console.log(uuid,commentid,comment ,openid);
+
+
+    let {  nickname, headimgurl, sex } = user
 
     await StarComment.create({   //创建评论
-        openid, nickname, headimgurl, sex, uuid, ccid: commentid, comment
+        openid:user.openid, 
+        nickname, 
+        headimgurl, 
+        sex, 
+        uuid,  
+        comment,
+
+        ccid: commentid, 
+        ccopenid:openid
+
     }).then()
         .catch(e => {
             console.log(e);
@@ -86,8 +100,7 @@ const addComment = async (user, uuid, commentid, comment) => {
         await Star.findOne({     //增加星球的热度
             where: { uuid }
         }).then(async st => {
-            st.increment('hot').then(data => {
-            })
+            st.increment('hot').then()
         })
     } else {
         await StarComment.findOne({     //增加评论区的评论数
@@ -99,7 +112,6 @@ const addComment = async (user, uuid, commentid, comment) => {
 
 
 }
-
 const addLikes = async (commentid) => {
 
     await StarComment.findOne({
@@ -121,7 +133,6 @@ const showOneStar = async (uuid) => {
     return await data
 }
 
-
 const showOneComment = async (commentid) => {
     let data = await StarComment.findAll({
         where: { ccid: commentid },
@@ -134,12 +145,97 @@ const showOneComment = async (commentid) => {
     return await data
 }
 
-//超话首页展示
+//女生删除愿望
+const removeComment = async (commentid) => {
+    StarComment.destroy({ where: { commentid } })
+}
+
+//与我有关
+const myRelated = async (openid) => {
+    let data = await StarComment.findAll({
+        where: { ccopenid: openid },
+        order: [
+            ['createdAt', 'DESC'],
+        ],
+        attributes: [['createdAt','comment_time'], 'headimgurl', 'nickname', 'sex', 'comment'],
+        include: [{
+            model: StarComment,
+            as:'fc',
+            attributes:['nickname','comment','sex'],
+            include:[{
+                model:Star,
+                as:'fs',
+                attributes:['title'],
+            }],
+        }],
+        // raw:true
+    })
+
+    return await data
+}
+
+
+//我的发布
+const myCreated = async(openid) =>{
+    let data = await StarComment.findAll({
+        where: { openid: openid ,
+                 ccid:null
+        },
+        order: [
+            ['createdAt', 'DESC'],
+        ],
+        attributes: ['createdAt', 'headimgurl', 'nickname', 'sex', 'comment','likes','many',Sequelize.col('fs.title')],
+        include:[{
+            model:Star,
+            as:'fs',
+            attributes:[]
+        }],
+        raw:true
+    })
+
+    return await data
+}
+
+//我的评论
+const myComment = async(openid) =>{
+    let data = await StarComment.findAll({
+        where: { openid: openid ,
+                 uuid:null
+        },
+        order: [
+            ['createdAt', 'DESC'],
+        ],
+        attributes: ['createdAt', 'headimgurl', 'nickname', 'sex', 'comment'],
+        include:[{
+            model:StarComment,
+            as:'fc',
+            attributes:['nickname','comment','likes','sex'],
+            include:[{
+                model:Star,
+                as:'fs',
+                attributes:['title']
+            }]
+        }],
+        // raw:true
+    })
+
+    return await data
+}
+
+
+
+
+
+
 module.exports = {
     createStar,
     showAllStar,
     addComment,
     addLikes,
     showOneStar,
-    showOneComment
+    showOneComment,
+    removeComment,
+    myRelated,
+    myCreated,
+    myComment
 }

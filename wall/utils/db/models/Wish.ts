@@ -65,7 +65,7 @@ export class Wish extends Model<Wish> {
 
 
   @HasMany(() => Gain)
-  gain: Gain[];
+  gains: Gain[];
 
   @Column({
     get() {

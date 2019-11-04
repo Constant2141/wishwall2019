@@ -9,7 +9,7 @@ const showAllWish = async (openid, wish_where, curPage, pageSize) => {
     if (!pageSize) pageSize = 10;
     let wishList;
     if (wish_where) {
-        wishList = await Wish.findAll({
+        wishList = await Wish.findAndCountAll({
             order: [
                 ['createdAt', 'DESC']
             ],
@@ -20,7 +20,7 @@ const showAllWish = async (openid, wish_where, curPage, pageSize) => {
             limit: pageSize
         })
     } else {
-        wishList = await Wish.findAll({
+        wishList = await Wish.findAndCountAll({
             order: [
                 ['createdAt', 'DESC']
             ],
@@ -32,7 +32,7 @@ const showAllWish = async (openid, wish_where, curPage, pageSize) => {
 
     let gainList = await Gain.findAll({ where: { openid } });
     gainList.forEach(g => {
-        wishList.forEach(w => {
+        wishList.rows.forEach(w => {
             if (g.uuid === w.uuid) {
                 w.gainOrNot = true;
             }
@@ -159,6 +159,8 @@ const showGained = async (openid) => {
             Sequelize.col('w.wish_status'),
             Sequelize.col('w.wish_many'),
             Sequelize.col('w.anonymous'),
+            Sequelize.col('w.headimgurl'),
+            Sequelize.col('w.nickname'),
         ],
         include: [{
             model: Wish,

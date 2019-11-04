@@ -4,6 +4,7 @@ const Sequelize = require('sequelize');
 const Uuid = require("uuid");
 const fs = require('fs')
 const path = require('path')
+const Op = Sequelize.Op
 
 //上传超话的背景图
 const uploadfile = async (bgPic, uuid) => {
@@ -19,24 +20,25 @@ const uploadfile = async (bgPic, uuid) => {
 
     return filePath
 
-} 
+}
 //发布一个超话
 const createStar = async data => {
     let { title, comment, bgPic, user } = data;
     let { openid } = user
-    
+    var path;
 
     let uuid = Uuid.v4()
     let ccid = null
-    let path = await uploadfile(bgPic, uuid).then() //上传背景图
+    if (bgPic) {
+        path = await uploadfile(bgPic, uuid).then() //上传背景图
+    }
+
 
     await Star.create({                         //创建超话
         title, uuid, openid, bgPic: path
     });
 
-    await addComment(user, uuid, comment,ccid)      //创建者发布时的内容就是第一条评论
-
- 
+    await addComment(user, uuid, comment, ccid)      //创建者发布时的内容就是第一条评论
 }
 //展示超话列表，flag为1最新排序；0热度排序
 const showAllStar = async (curPage, pageSize, flag) => {
@@ -55,7 +57,7 @@ const showAllStar = async (curPage, pageSize, flag) => {
             ],
             offset: (curPage - 1) * pageSize,
             limit: pageSize,
-            attributes: ['createdAt', 'title', 'bgPic', 'hot']
+            attributes: ['createdAt', 'title', 'bgPic', 'hot', 'uuid']
         })
     } else {
         list = await Star.findAll({
@@ -65,29 +67,29 @@ const showAllStar = async (curPage, pageSize, flag) => {
             ],
             offset: (curPage - 1) * pageSize,
             limit: pageSize,
-            attributes: ['createdAt', 'title', 'bgPic', 'hot']
+            attributes: ['createdAt', 'title', 'bgPic', 'hot', 'uuid']
         })
     }
     return list
 }
 //创建评论,
-const addComment = async (user,uuid,comment, commentid?,openid?) => {
+const addComment = async (user, uuid, comment, commentid?, openid?) => {
 
-    console.log(uuid,commentid,comment ,openid);
+    console.log(uuid, commentid, comment, openid);
 
 
-    let {  nickname, headimgurl, sex } = user
+    let { nickname, headimgurl, sex } = user
 
     await StarComment.create({   //创建评论
-        openid:user.openid, 
-        nickname, 
-        headimgurl, 
-        sex, 
-        uuid,  
+        openid: user.openid,
+        nickname,
+        headimgurl,
+        sex,
+        uuid,
         comment,
 
-        ccid: commentid, 
-        ccopenid:openid
+        ccid: commentid,
+        ccopenid: openid
 
     }).then()
         .catch(e => {
@@ -127,7 +129,7 @@ const showOneStar = async (uuid) => {
         order: [
             ['createdAt', 'DESC'],
         ],
-        attributes: ['createdAt', 'commentid', 'headimgurl', 'nickname', 'sex', 'comment', 'likes']
+        attributes: ['createdAt', 'many', 'headimgurl', 'nickname', 'sex', 'comment', 'likes']
     })
 
     return await data
@@ -145,9 +147,14 @@ const showOneComment = async (commentid) => {
     return await data
 }
 
-//女生删除愿望
+//删除评论
 const removeComment = async (commentid) => {
     StarComment.destroy({ where: { commentid } })
+}
+
+//删除超话
+const removeWish = async (uuid) => {
+    Star.destroy({ where: { uuid } })
 }
 
 //与我有关
@@ -157,15 +164,15 @@ const myRelated = async (openid) => {
         order: [
             ['createdAt', 'DESC'],
         ],
-        attributes: [['createdAt','comment_time'], 'headimgurl', 'nickname', 'sex', 'comment'],
+        attributes: [['createdAt', 'comment_time'], 'headimgurl', 'nickname', 'sex', 'comment'],
         include: [{
             model: StarComment,
-            as:'fc',
-            attributes:['nickname','comment','sex'],
-            include:[{
-                model:Star,
-                as:'fs',
-                attributes:['title'],
+            as: 'fc',
+            attributes: ['nickname', 'comment', 'sex'],
+            include: [{
+                model: Star,
+                as: 'fs',
+                attributes: ['title'],
             }],
         }],
         // raw:true
@@ -176,44 +183,46 @@ const myRelated = async (openid) => {
 
 
 //我的发布
-const myCreated = async(openid) =>{
+const myCreated = async (openid) => {
     let data = await StarComment.findAll({
-        where: { openid: openid ,
-                 ccid:null
+        where: {
+            openid: openid,
+            ccid: null
         },
         order: [
             ['createdAt', 'DESC'],
         ],
-        attributes: ['createdAt', 'headimgurl', 'nickname', 'sex', 'comment','likes','many',Sequelize.col('fs.title')],
-        include:[{
-            model:Star,
-            as:'fs',
-            attributes:[]
+        attributes: ['createdAt', 'headimgurl', 'nickname', 'sex', 'comment', 'likes', 'many', Sequelize.col('fs.title')],
+        include: [{
+            model: Star,
+            as: 'fs',
+            attributes: []
         }],
-        raw:true
+        raw: true
     })
 
     return await data
 }
 
 //我的评论
-const myComment = async(openid) =>{
+const myComment = async (openid) => {
     let data = await StarComment.findAll({
-        where: { openid: openid ,
-                 uuid:null
+        where: {
+            openid: openid,
+            uuid: null
         },
         order: [
             ['createdAt', 'DESC'],
         ],
         attributes: ['createdAt', 'headimgurl', 'nickname', 'sex', 'comment'],
-        include:[{
-            model:StarComment,
-            as:'fc',
-            attributes:['nickname','comment','likes','sex'],
-            include:[{
-                model:Star,
-                as:'fs',
-                attributes:['title']
+        include: [{
+            model: StarComment,
+            as: 'fc',
+            attributes: ['nickname', 'comment', 'likes', 'sex'],
+            include: [{
+                model: Star,
+                as: 'fs',
+                attributes: ['title']
             }]
         }],
         // raw:true
@@ -223,9 +232,28 @@ const myComment = async(openid) =>{
 }
 
 
+const topChart = async () => {
+    let data = Star.findAll({
+        order: [
+            ['hot', 'DESC']
+        ],
+        attributes: ['title', "hot"],
+        limit: 6,
+    })
+    return data
+}
 
-
-
+const searchStar = async (title) => {
+    let data = Star.findAll({
+        where:{
+           title:{
+            [Op.like]: `%${title}%`, 
+           }
+        },
+        attributes: ['createdAt', 'title', 'bgPic', 'hot', 'uuid']
+    })
+    return data
+}
 
 module.exports = {
     createStar,
@@ -237,5 +265,8 @@ module.exports = {
     removeComment,
     myRelated,
     myCreated,
-    myComment
+    myComment,
+    removeWish,
+    topChart,
+    searchStar
 }

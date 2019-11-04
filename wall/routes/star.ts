@@ -15,15 +15,13 @@ router.post("/create", async ctx => {
         title,comment,bgPic,user
     };
     // console.log(data);
-    try {
-        await starDao.createStar(data);
-        result = '发布星球成功'
+    try { 
+        result =  await starDao.createStar(data);
         code = 200;
     } catch (err) {
         result = err.message;
         code = 500;
     }
-
     ctx.body = {
         code,
         result
@@ -93,11 +91,13 @@ router.get("/list", async ctx => {
         result
     };
 });
-
+ 
 
 
 //展示指定超话(点进某一个超话里面)
 router.get("/showStar", async ctx => {
+    console.log('kkk');
+    console.log(ctx.request.query);
     let {uuid} = ctx.request.query;
     let result, code;
     try { 
@@ -148,6 +148,23 @@ router.get("/removeComment", async ctx => {
         result
     };
 });
+//删除超话
+router.get("/removeStar",async ctx =>{
+    let { uuid } = ctx.request.query;
+    let result, code;
+    try {
+        await starDao.removeStar(uuid);
+        result = 'remove star success'
+        code = 200;
+    } catch (err) {
+        code = 500;
+        result = err.message;
+    }
+    ctx.body = {
+        code,
+        result
+    };
+})
 
 //与我有关
 router.get("/myRelated", async ctx => {
@@ -203,5 +220,42 @@ router.get("/myComment", async ctx => {
         result
     };
 });
+
+
+//热门排行
+router.get("/topChart", async ctx => {
+    let result, code;
+    try { 
+        result = await starDao.topChart();
+        code = 200;
+    } catch (err) {
+        code = 500;
+        result = err.message;
+    }
+    ctx.body = {
+        code,
+        result
+    };
+});
+
+
+
+//搜索
+router.post("/search", async ctx => {
+    let { title } = ctx.request.body;
+    let result, code;
+    try { 
+        result = await starDao.searchStar(title);
+        code = 200;
+    } catch (err) {
+        code = 500;
+        result = err.message;
+    }
+    ctx.body = {
+        code,
+        result
+    };
+});
+
 
 module.exports = router

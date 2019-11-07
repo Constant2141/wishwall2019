@@ -1,53 +1,59 @@
-const sha1 = require("sha1");
-const config = require("./config");
 
-//生成签名的随机串
-const getNoncestr = () =>
-    Math.random()
-        .toString(36)
-        .substr(2, 15);
-//签名算法
-const getSign = (url, ns, ts) => {
-    let jsapi_ticket = config.jsapi_ticket;
-    let args = {
-        jsapi_ticket,
-        noncestr: ns,
-        timestamp: ts,
-        url: url
-    };
+//签名
+const sha1 = require('sha1')
 
-    //对 args 进行排序
-    let keys = Object.keys(args).sort();
-    let newArgs = {};
-    keys.forEach(key => {
-        newArgs[key] = args[key];
-    });
+const rp = require('request-promise');
+//config
+const config =  require('./config') 
 
-    var string = "";
-    for (var k in newArgs) {
-        string += "&" + k + "=" + newArgs[k];
-    }
-    string = string.substr(1);
-    return sha1(string); 
-};
-const wxConfig = url => {
-    console.log('传过来的url是'+url);
-    // console.log(`wxConfig:${url}`);
-    let appId = config.appId,
-        timestamp = Math.round(new Date() / 1000),
-        noncestr = getNoncestr(),
-        signature = getSign(url, noncestr, timestamp);
+function sha1Ticket(ticket,url){
 
-    // 返回微信配置
-    return {
-        appId,
-        timestamp,
-        nonceStr: noncestr,
-        signature
-    };
-};
+  let signature;
+  
+  let timestamp = 1111111111;
+  
+  let jsapi_ticket = ticket;
+  console.log(ticket);
+  
+  const nonceStr = "nw2019wishwall6.0";
+  console.log(url,'123');
+  
+  console.log({timestamp,nonceStr,jsapi_ticket,url});
+  
+  let query = `jsapi_ticket=${jsapi_ticket}&noncestr=${nonceStr}&timestamp=${timestamp}&url=${url}`
+
+  signature = sha1(query);
+
+  let WXconfig = {
+    debug: true,
+    appId: config.appid,
+    timestamp,
+    nonceStr,
+    signature,
+    jsApiList:['updateTimelineShareData', 'updateAppMessageShareData', 'onMenuShareAppMessage']
+  }
+  return WXconfig
+}
+
+
+async function getTicket(){
+
+  let ticket = await rp.get(`https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${config.appid}&secret=${config.secret}`)
+  .then(async res=> {
+    let access_token = JSON.parse(res).access_token;
+
+    return await rp.get(`https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=${access_token}&type=jsapi`)
+    .then(res=>{
+      return JSON.parse(res).ticket
+    })
+
+  }).catch(e=>console.log(e));
+  
+  return await ticket
+}
 
 
 module.exports = {
-    wxConfig,
-};
+  getTicket,
+  sha1Ticket
+}

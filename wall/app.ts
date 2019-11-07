@@ -48,11 +48,11 @@ app.use(async (ctx, next) => {
 
 
 // 验证是否有在header中携带token
-// app.use(
-//   koaJwt({ secret: tokenSecret }).unless({
-//       path: [/^\/login/]    
-//   })
-// );
+app.use(
+  koaJwt({ secret: tokenSecret }).unless({
+      path: [/^\/login/]    
+  })
+);
 // token错误拦截与过期
 app.use(async (ctx, next) => {
   if(ctx.header.authorization){

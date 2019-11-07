@@ -1,15 +1,14 @@
 const Router = require('koa-router')
-  , parseToken = require('../utils/jwt/parseToken')
-  , router = new Router();
+    , parseToken = require('../utils/jwt/parseToken')
+    , router = new Router();
 
-import {
-  addTreeHole
-  , getMyTreeHoles
-  , getAllTreeHoles
-  , addLikes
-  , addTreeHoleComment
-  , countMyTreeHoles
-} from '../Dao/treeholeDao';
+import { addTreeHole
+       , getMyTreeHoles
+       , getAllTreeHoles
+       , addLikes
+       , addTreeHoleComment
+       , countMyTreeHoles
+       , deleteTreeHole } from '../Dao/treeholeDao';
 
 router.post('/addTreeHole', async ctx => {
   let { text }: { text: string } = ctx.request.body
@@ -89,6 +88,24 @@ router.post('/addLikes', async ctx => {
   }
 })
 
+router.post('/deleteTreeHole', async ctx => {
+  let { treeholeId } = ctx.request.body
+    , code = 500
+    , result: Boolean;
+
+  try{
+    result = await deleteTreeHole(treeholeId);
+    code = 200
+  }catch(err) {
+    result = err.message;
+    code = 500
+  }
+
+  ctx.body = await {
+    code,
+    result
+  }
+})
 router.post('/addTreeHoleComment', async ctx => {
   let { comment, treeholeId } = ctx.request.body
     , { sex } = await parseToken(ctx)

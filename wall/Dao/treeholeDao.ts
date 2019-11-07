@@ -205,7 +205,18 @@ export async function countMyTreeHoles(openid): Promise<Number>{
 
   return await result
 }
+export async function deleteTreeHole(treeholeId): Promise<Boolean>{
+  if(isNullOrUndefined(treeholeId)) throw new Error('treeholeId is invaild')
 
+  let result: Boolean =false;
+
+  result = await TreeHole.destroy({
+    where:{treeholeId}
+  }).then(() => true)
+  .catch(e=>{console.log(e);return false})
+  
+  return result
+}
 function isNullOrUndefined(value):boolean {
   if(value != null && value != undefined) return false
   return true

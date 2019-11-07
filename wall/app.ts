@@ -53,6 +53,7 @@ app.use(
       path: [/^\/login/]    
   })
 );
+
 // token错误拦截与过期
 app.use(async (ctx, next) => {
   if(ctx.header.authorization){

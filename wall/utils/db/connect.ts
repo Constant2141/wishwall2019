@@ -7,7 +7,8 @@ const sequelize = new Sequelize({
   username: config.username,
   password: config.password,
   pool: config.pool,
-  host:config.host
+  host:config.host,
+  timezone: '+08:00'
 });
 
 sequelize.authenticate()

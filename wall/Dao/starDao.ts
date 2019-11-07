@@ -147,7 +147,7 @@ const showOneStar = async (uuid, openid) => {
         order: [
             ['createdAt', 'DESC'],
         ],
-        attributes: ['createdAt', 'many', 'headimgurl', 'nickname', 'sex', 'comment', 'likes', 'commentid', 'likeOrNot']
+        attributes: ['createdAt','many', 'headimgurl', 'nickname', 'sex', 'comment', 'likes', 'commentid', 'likeOrNot']
     })
 
 
@@ -269,7 +269,7 @@ const topChart = async () => {
         order: [
             ['hot', 'DESC']
         ],
-        attributes: ['title', "hot"],
+        // attributes: ['title', "hot","uuid"],
         limit: 6,
     })
     return data

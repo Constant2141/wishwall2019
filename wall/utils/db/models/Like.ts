@@ -20,7 +20,7 @@ export class Like extends Model<Like> {
 
     @Column({
         get() {
-            return moment(this.getDataValue('updatedAt')).format('YYYY-MM-DD HH:mm:ss');
+            return moment(this.getDataValue('createdAt')).format('YYYY-MM-DD HH:mm:ss');
         }
     })
     createdAt: Date

@@ -1,3 +1,4 @@
+
 const Koa = require('koa')
 const app = new Koa()
 const views = require('koa-views')
@@ -35,6 +36,7 @@ app.use(views(__dirname + '/views', {
 // app.context.db=require('./utils/db');
 
 
+
 // logger
 app.use(async (ctx, next) => {
   const start = new Date().getTime()
@@ -43,12 +45,21 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
+
+
+// 验证是否有在header中携带token
+// app.use(
+//   koaJwt({ secret: tokenSecret }).unless({
+//       path: [/^\/login/]    
+//   })
+// );
 // token错误拦截与过期
 app.use(async (ctx, next) => {
   if(ctx.header.authorization){
-    // console.log(ctx.header.authorization);
+    console.log(ctx.header.authorization);
+  }else{
+   console.log('没有authorization');
   }
-  
   return next().catch(err => {
       if (err.status === 401) {
           ctx.status = 401;
@@ -58,17 +69,7 @@ app.use(async (ctx, next) => {
           throw err;
       }
   });
-
-
-  
 });
-
-// 验证是否有在header中携带token
-app.use(
-  koaJwt({ secret: tokenSecret }).unless({
-      path: [/^\/login/]    
-  })
-);
 
 
 // routes

@@ -1,5 +1,7 @@
 import { Star } from '../utils/db/models/Star'
 import { StarComment } from '../utils/db/models/StarComment'
+import { Like } from '../utils/db/models/Like';
+import { log } from 'util';
 const Sequelize = require('sequelize');
 const Uuid = require("uuid");
 const fs = require('fs')
@@ -114,22 +116,52 @@ const addComment = async (user, uuid, comment, commentid?, openid?) => {
 
 
 }
-const addLikes = async (commentid) => {
+const handleLikes = async (commentid, upDown, openid) => {
 
-    await StarComment.findOne({
-        where: { commentid }
-    }).then(async st => {
-        st.increment('likes').then()
-    })
+    if (upDown == 1) {
+        await StarComment.findOne({
+            where: { commentid }
+        }).then(async st => {
+            st.increment('likes').then()
+        })
+
+        Like.create({
+            openid,
+            commentid
+        });
+
+    } else {
+        await StarComment.findOne({
+            where: { commentid }
+        }).then(async st => {
+            st.decrement('likes').then()
+        })
+
+        Like.destroy({where:{commentid}});
+    }
 }
 
-const showOneStar = async (uuid) => {
+const showOneStar = async (uuid, openid) => {
     let data = await StarComment.findAll({
         where: { uuid },
         order: [
             ['createdAt', 'DESC'],
         ],
-        attributes: ['createdAt', 'many', 'headimgurl', 'nickname', 'sex', 'comment', 'likes']
+        attributes: ['createdAt', 'many', 'headimgurl', 'nickname', 'sex', 'comment', 'likes', 'commentid', 'likeOrNot']
+    })
+
+
+    let likeList = await Like.findAll({ where: { openid } })
+
+
+    await data.forEach(i => {
+        // console.log('评论id'+i.commentid);
+        likeList.forEach(l => {
+            // console.log('点赞id'+l.commentid);
+            if (i.commentid == Number(l.commentid)) {
+                i.likeOrNot = 1;
+            }
+        })
     })
 
     return await data
@@ -192,7 +224,7 @@ const myCreated = async (openid) => {
         order: [
             ['createdAt', 'DESC'],
         ],
-        attributes: ['createdAt', 'headimgurl', 'nickname', 'sex', 'comment', 'likes', 'many', Sequelize.col('fs.title')],
+        attributes: ['createdAt', 'headimgurl', 'nickname', 'sex', 'comment', 'likes', 'many', Sequelize.col('fs.title'), Sequelize.col('fs.uuid')],
         include: [{
             model: Star,
             as: 'fs',
@@ -214,7 +246,7 @@ const myComment = async (openid) => {
         order: [
             ['createdAt', 'DESC'],
         ],
-        attributes: ['createdAt', 'headimgurl', 'nickname', 'sex', 'comment'],
+        attributes: ['createdAt', 'headimgurl', 'nickname', 'sex', 'comment', 'commentid'],
         include: [{
             model: StarComment,
             as: 'fc',
@@ -231,7 +263,7 @@ const myComment = async (openid) => {
     return await data
 }
 
-
+//热度
 const topChart = async () => {
     let data = Star.findAll({
         order: [
@@ -242,13 +274,13 @@ const topChart = async () => {
     })
     return data
 }
-
+//搜索
 const searchStar = async (title) => {
     let data = Star.findAll({
-        where:{
-           title:{
-            [Op.like]: `%${title}%`, 
-           }
+        where: {
+            title: {
+                [Op.like]: `%${title}%`,
+            }
         },
         attributes: ['createdAt', 'title', 'bgPic', 'hot', 'uuid']
     })
@@ -259,7 +291,7 @@ module.exports = {
     createStar,
     showAllStar,
     addComment,
-    addLikes,
+    handleLikes,
     showOneStar,
     showOneComment,
     removeComment,

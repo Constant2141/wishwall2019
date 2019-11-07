@@ -26,11 +26,15 @@ router.get('/', async ctx => {
 })
 
 router.get('/test', async ctx => {
+
   let { openid, refresh_token } = ctx.request.query
+
+  console.log(openid, refresh_token);
+
 
   let newAccess = await rp(`https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=${wxConfig.appid}&grant_type=refresh_token&refresh_token=${refresh_token}`)
     .then(data => {
-      // console.log(data,'123',data.access_token);
+      console.log(JSON.parse(data));
       return JSON.parse(data).access_token
     })
 
@@ -70,7 +74,7 @@ router.get('/getUserInfo', async ctx => {
 
     case '03':
       openid = 'oO7BY6MEb0D4AXnxHqNuL9_hlQbg'; //朕
-      refresh_token = '26_yVAg5Dwxopzu8tWm5PT-K844tl4ejfeHAzgQg54jN-8tCxqK7LxndrSiy62Qp8FbAziP041ofEnv4hHn-9-bD7Md4C5UzrSzpUmfs6ENcRs'
+      refresh_token = '27_Y8m_zIyw0HIcrwZPg-RhJ2M_o1YMS7gvC0-yF6Ld7mgFb0Spl5Wwv9svkoy-Rp99fGZn2uZIrczipH2jsu7z1_zKDkuNnGyOc0RAJs1a7a8'
       break;
 
     case '04':
@@ -85,7 +89,7 @@ router.get('/getUserInfo', async ctx => {
 
     case '12':
       openid = 'oO7BY6Hex23uguZok9vA1pPZwVGQ'; //大爷
-      refresh_token =  '26_O3PDrStzODHR12BUWE-2ZhwgewXnMAo-qCnuPGRnd3LvIvoGzRSRk6hw6KiSfQiv4Org686-Pi-g3gtILQM8V3Dk9bFt1IthQOePVcGZ47E' 
+      refresh_token = '26_O3PDrStzODHR12BUWE-2ZhwgewXnMAo-qCnuPGRnd3LvIvoGzRSRk6hw6KiSfQiv4Org686-Pi-g3gtILQM8V3Dk9bFt1IthQOePVcGZ47E'
       break;
 
     default:

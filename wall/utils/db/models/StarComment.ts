@@ -40,12 +40,17 @@ export class StarComment extends Model<StarComment> {
   
   @Default(0)
   @Column
-  likes: number
+  likes: number   //点赞数量
 
 
   @Default(0)
   @Column
-  many: number
+  many: number  //评论数量
+
+  @Default(0)  //是否领取了，针对当前用户
+  @Column
+  likeOrNot: number
+
 
   
   @BelongsTo(() => Star,{as:'fs'})

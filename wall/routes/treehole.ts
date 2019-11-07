@@ -1,13 +1,15 @@
 const Router = require('koa-router')
-    , parseToken = require('../utils/jwt/parseToken')
-    , router = new Router();
+  , parseToken = require('../utils/jwt/parseToken')
+  , router = new Router();
 
-import { addTreeHole
-       , getMyTreeHoles
-       , getAllTreeHoles
-       , addLikes
-       , addTreeHoleComment
-       , countMyTreeHoles } from '../Dao/treeholeDao';
+import {
+  addTreeHole
+  , getMyTreeHoles
+  , getAllTreeHoles
+  , addLikes
+  , addTreeHoleComment
+  , countMyTreeHoles
+} from '../Dao/treeholeDao';
 
 router.post('/addTreeHole', async ctx => {
   let { text }: { text: string } = ctx.request.body
@@ -15,14 +17,14 @@ router.post('/addTreeHole', async ctx => {
     , code: number = 500
     , result: object = {};
 
-  try{
-    result =await addTreeHole(openid, text)
+  try {
+    result = await addTreeHole(openid, text)
     code = 200
-  }catch(err) {
+  } catch (err) {
     result = err.message
     code = 500
   };
-  ctx.body =await {
+  ctx.body = await {
     code,
     result,
   }
@@ -33,15 +35,15 @@ router.get('/getMyTreeHoles', async ctx => {
     , code: number = 500
     , result: Array<Object>;
 
-  try{
+  try {
     result = await getMyTreeHoles(openid);
     code = 200
-  }catch(err) {
+  } catch (err) {
     result = err.message
     code = 500
   }
 
-  ctx.body =await {
+  ctx.body = await {
     code,
     result
   };
@@ -53,16 +55,16 @@ router.get('/getAllTreeHoles', async ctx => {
     , { openid } = await parseToken(ctx)
     , code: number = 500
     , result: Array<Object>;
-  
-  try{
+
+  try {
     result = await getAllTreeHoles(openid, parseInt(countPerPage), parseInt(currentPage));
     code = 200
-  }catch(err) {
+  } catch (err) {
     result = err.message
     code = 500
   }
 
-  ctx.body =await {
+  ctx.body = await {
     code,
     result
   };
@@ -73,14 +75,14 @@ router.post('/addLikes', async ctx => {
     , code = 500
     , result: Boolean;
 
-  try{
+  try {
     result = await addLikes(treeholeId)
     code = 200
-  }catch(err) {
+  } catch (err) {
     result = err.message
     code = 500
   }
-  
+
   ctx.body = await {
     code,
     result
@@ -93,10 +95,10 @@ router.post('/addTreeHoleComment', async ctx => {
     , code = 500
     , result: Boolean;
 
-  try{
+  try {
     result = await addTreeHoleComment(sex, comment, treeholeId);
     code = 200
-  }catch(err) {
+  } catch (err) {
     result = err.message;
     code = 500
   }
@@ -112,10 +114,10 @@ router.get('/countMyTreeHoles', async ctx => {
     , code = 500
     , result: Number;
 
-  try{
+  try {
     result = await countMyTreeHoles(openid);
     code = 200
-  }catch(err) {
+  } catch (err) {
     result = err.message
     code = 500
   }

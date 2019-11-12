@@ -3,7 +3,7 @@ const parseToken = require('../utils/jwt/parseToken')
 const wishDao = require('../Dao/wishDao')
 import { Wish } from '../utils/db/models/Wish'
 
-
+   
 //得到所有未被领取的愿望，首页用
 router.get("/list", async ctx => {
 
@@ -58,7 +58,6 @@ router.post("/create", async ctx => {
  
 //领取愿望，首页用
 router.get("/gain", async ctx => {
-    console.log('请求进来了吗');
     
     let { openid,nickname ,headimgurl} = await parseToken(ctx);
     let { uuid } = ctx.request.query;

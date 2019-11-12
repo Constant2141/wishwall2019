@@ -6,14 +6,12 @@ import { TreeHoleComment } from './models/TreeHoleComment'
 import { Star } from './models/Star'
 import { Like } from './models/Like'
 import { StarComment } from './models/StarComment'
+import { Temp } from './models/Temp'
 const sequelize = require('./connect')
 
 
 
-sequelize.addModels([User,Wish,Gain,TreeHole,TreeHoleComment,Star,StarComment,Like]);
-// sequelize.addModels([User]);
-// sequelize.addModels([User, Wish,Gain,Like]);
-// Gain.belongsTo(Wish, { foreignKey: 'uuid', targetKey: 'uuid' })
+sequelize.addModels([User,Wish,Gain,TreeHole,TreeHoleComment,Star,StarComment,Like,Temp]);
 
 sequelize.sync({force:false}).then(res => {
   console.log('init success');

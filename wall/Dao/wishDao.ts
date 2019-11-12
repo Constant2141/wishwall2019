@@ -1,31 +1,33 @@
 import { Wish } from '../utils/db/models/Wish'
 import { Gain } from '../utils/db/models/Gain'
+import { Temp } from '../utils/db/models/Temp';
 const Sequelize = require('sequelize');
 const Uuid = require("uuid");
 
-//获得某个校区的愿望,按发布时间排序
+//获得某个校区的愿望,按发布时间排序  wish_status   0 表示还没被确认完成，1表示确认完成了
 const showAllWish = async (openid, wish_where, curPage, pageSize) => {
     if (!curPage) curPage = 1;
     if (!pageSize) pageSize = 10;
     let wishList;
     if (wish_where) {
-        wishList = await Wish.findAndCountAll({
+        wishList = await Temp.findAndCountAll({
             order: [
                 ['createdAt', 'DESC']
             ],
             where: {
                 wish_where,
+                wish_status: 0
             },
             offset: (curPage - 1) * pageSize,
-            limit: pageSize
+            limit: Number(pageSize)
         })
     } else {
-        wishList = await Wish.findAndCountAll({
+        wishList = await Temp.findAndCountAll({
             order: [
                 ['createdAt', 'DESC']
             ],
             offset: (curPage - 1) * pageSize,
-            limit: pageSize
+            limit: Number(pageSize)
         })
     }
 
@@ -57,9 +59,7 @@ const createWish = async wish => {
         anonymous
     } = wish;
 
-
-
-    let data = new Wish({
+    let obj = {
         nickname,
         openid,
         headimgurl,
@@ -67,27 +67,31 @@ const createWish = async wish => {
         wish_content,
         wish_where,
         uuid,
-        contact,    //没有默认是null
+        contact,
         anonymous
-    });
+    }
 
-    return data.save()
+
+
+   await Wish.create(obj);
+   await Temp.create(obj);
+
 }
 
 //男生领取愿望
 const gainWish = async (openid, nickname, uuid, headimgurl) => {
 
 
-    //更新wish中的领取人，领取时间，愿望状态
+    //这里逻辑修改，只有是第一个人领取此条愿望的时候才会执行，保存firstPicker_time第一个领取的人的时间
     await Wish.update({
-        picker_openid: openid,
-        pick_time: new Date(),
-        // wish_status: 1,
+        firstPicker_time: new Date(),
     }, {
             where: {
-                uuid
+                uuid,
+                wish_many: 0
             }
         });
+
     //领取人数增加1
     let found = await Wish.findOne({ where: { uuid } })
     await found.increment('wish_many')
@@ -106,7 +110,7 @@ const gainWish = async (openid, nickname, uuid, headimgurl) => {
 //女生确定愿望已经完成
 const finishWish = async (uuid) => {
     // console.log('有执行吗');
-    
+
     Wish.update({
         wish_status: 1,
         finish_time: new Date()
@@ -132,7 +136,7 @@ const showCreated = async (openid) => {
         include: [{
             model: Gain,
             // as: 'g',
-            attributes: [['createdAt','pick_time'],'headimgurl','nickname']
+            attributes: [['createdAt', 'pick_time'], 'headimgurl', 'nickname']
         }],
 
     })

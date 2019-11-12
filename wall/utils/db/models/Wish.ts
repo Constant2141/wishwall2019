@@ -29,8 +29,8 @@ export class Wish extends Model<Wish> {
   @Column(DataType.STRING(128))
   contact: string    //联系方式
 
-  @Column(DataType.STRING(128))
-  picker_openid: string //领取者openid
+  // @Column(DataType.STRING(128))
+  // picker_openid: string //领取者openid
 
   @Column(DataType.STRING(128))
   wish_content: string
@@ -49,8 +49,7 @@ export class Wish extends Model<Wish> {
   @Column
   wish_many: number
 
-  @Column
-  pick_time: Date
+ 
 
   @Column
   finish_time: Date
@@ -80,6 +79,15 @@ export class Wish extends Model<Wish> {
     }
   })
   updatedAt: Date
+
+
+  @Column({
+    get() {
+      if(this.getDataValue('firstPicker_time')!= null)
+      return moment(this.getDataValue('firstPicker_time')).format('YYYY-MM-DD HH:mm:ss');
+    }
+  })
+  firstPicker_time: Date   //第一个领取的人的时间
 }
 
 

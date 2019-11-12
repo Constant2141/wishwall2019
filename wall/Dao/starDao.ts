@@ -1,7 +1,6 @@
 import { Star } from '../utils/db/models/Star'
 import { StarComment } from '../utils/db/models/StarComment'
 import { Like } from '../utils/db/models/Like';
-import { log } from 'util';
 const Sequelize = require('sequelize');
 const Uuid = require("uuid");
 const fs = require('fs')

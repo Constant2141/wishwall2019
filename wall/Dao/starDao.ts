@@ -44,13 +44,18 @@ const createStar = async data => {
 }
 //展示超话列表，flag为1最新排序；0热度排序
 const showAllStar = async (curPage, pageSize, flag) => {
+    console.log("?");
+    console.log(pageSize);
+    console.log(typeof curPage);
+    
+    
     let list = [];
     if (!curPage) curPage = 1;
     if (!pageSize) pageSize = 10;
 
-    console.log(flag);
-    console.log(typeof (flag));
-    console.log(flag == 1);
+    // console.log(flag);
+    // console.log(typeof (flag));
+    // console.log(flag == 1);
 
     if (flag == 1) {
         list = await Star.findAll({
@@ -58,7 +63,7 @@ const showAllStar = async (curPage, pageSize, flag) => {
                 ['createdAt', 'DESC'],
             ],
             offset: (curPage - 1) * pageSize,
-            limit: pageSize,
+            limit: Number(pageSize),
             attributes: ['createdAt', 'title', 'bgPic', 'hot', 'uuid']
         })
     } else {

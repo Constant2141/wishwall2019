@@ -69,7 +69,7 @@ router.get('/getUserInfo', async ctx => {
 
 
   switch (userID) {
-    case '00':
+    case '00': //黄狗狗
       openid = 'oO7BY6P--E2z-Q81w5lp6GpST-XM'
       refresh_token = '27_Vks5qI5CVlSwXT8pO0pFGPQ6iWFrkNq52ziQOAgav5BGuNsyxBwuxuQIwZHVcnu-kWX5XYduD0BSc0LNZ83_0_qmpowZPlNHmKgTGScP8hE' 
       break;
@@ -83,7 +83,7 @@ router.get('/getUserInfo', async ctx => {
       refresh_token = '26_OBZf3MJELgHDHSMER5o-Z8gi2ZlSW3pbtyirXMvOy2n7JGwfM96u4IV9tzqbRHO8rH1b41wro5S-BEHMkQTkScySoBO7SJNsjmEcYq6g4Wg'
       break;
 
-    case '03':
+    case '03': 
       openid = 'oO7BY6MEb0D4AXnxHqNuL9_hlQbg'; //朕
       refresh_token = '27_Y8m_zIyw0HIcrwZPg-RhJ2M_o1YMS7gvC0-yF6Ld7mgFb0Spl5Wwv9svkoy-Rp99fGZn2uZIrczipH2jsu7z1_zKDkuNnGyOc0RAJs1a7a8'
       break;
@@ -95,12 +95,12 @@ router.get('/getUserInfo', async ctx => {
 
     case '11':
       openid = 'oO7BY6BmbF9GMgq3UYTPXRoaViNQ'; //奖励金
-      refresh_token = '26_YDqGJPgMlft-cCHJYDhNCddCT3rNxCru1kSBxNGhvD71vC8NnDM2nFsLLyV7DlXTEXi2aK-CuYjDZFClOe_qhlLc35eqbQNb6ec84GpeOTQ'
+      refresh_token = '27_Y9l5kVzot9TIV1XVKR-_yI89Pa39Da3j0kftTzWPURVSCZjSabn-k4YBSlx8QcJv5qflw9C7udRhNKFZo2ro-NyHqWYFj7iLjwUy0GZ8XRM'
       break;
 
     case '12':
       openid = 'oO7BY6Hex23uguZok9vA1pPZwVGQ'; //大爷
-      refresh_token = '26_O3PDrStzODHR12BUWE-2ZhwgewXnMAo-qCnuPGRnd3LvIvoGzRSRk6hw6KiSfQiv4Org686-Pi-g3gtILQM8V3Dk9bFt1IthQOePVcGZ47E'
+      refresh_token =  '27_wIPNBGX3uAUhgQJoDHUc0N_aZ1URrUTggCFy0Ua3wgTT3rL607NeBEevLt7XxCb-XYdrUy68Xo7pB4OkMtVUSaHJliF2AjedeTHg5zueMTc'
       break;
 
     default:

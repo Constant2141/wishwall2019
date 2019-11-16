@@ -1,11 +1,10 @@
 import { Table, Column, DataType, Model, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import { TreeHole } from './TreeHole';
 
 @Table({
   timestamps: false
 })
 
-export class TreeHoleComment extends Model<TreeHoleComment> {
+export class TreeHoleLikes extends Model<TreeHoleLikes> {
 
   @Column({
     primaryKey : true,
@@ -23,13 +22,4 @@ export class TreeHoleComment extends Model<TreeHoleComment> {
     type: DataType.STRING(190)
   })
   treeholeId: string
-
-  @Column
-  sex: number
-
-  @Column(DataType.STRING(128))
-  comment: string
-
-  
-
 }

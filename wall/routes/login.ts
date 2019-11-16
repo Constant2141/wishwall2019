@@ -2,28 +2,41 @@ const Router = require('koa-router');
 const rp = require('request-promise');
 const wxConfig = require('../utils/wx/config');
 const getToken = require('../utils/jwt/getToken');
+const parseToken = require('../utils/jwt/parseToken')
 const {sha1Ticket, getTicket} = require('../utils/wx/sdk.js')
 import { getUserInfo } from '../utils/wx/index';
-import { addUser } from '../Dao/loginDao';
+import { addUser, getMyInfo } from '../Dao/loginDao';
 
 let router = new Router();
 
 router.get('/', async ctx => {
 
   let { code } = ctx.request.query
+  let result = null;
 
-  let User = await getUserInfo(code).then(async data => {
-    if (data == {}) {
-      return "拿不到用户数据"
-    } else {
-      // console.log("用户数据在此 : ", data);
-      let User = await addUser(data);
-      return User;
+  if(code) {
+    result = await getUserInfo(code).then(async data => {
+      if (data == {}) {
+        return "拿不到用户数据"
+      } else {
+        // console.log("用户数据在此 : ", data);
+        let User = await addUser(data);
+        return User;
+      }
+    })
+    result.token = getToken(result)
+  }else{
+    let { openid } = await parseToken(ctx)
+
+    try {
+      result = await getMyInfo(openid)
+      result.token = getToken(result)
+    } catch (error) {
+      console.log(error);
     }
-  })
-  User.token = getToken(User)
+  }
 
-  ctx.body = User
+  ctx.body = result
 })
 
 router.get('/getConfig', async ctx => {

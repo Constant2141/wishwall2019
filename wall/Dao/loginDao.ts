@@ -1,6 +1,22 @@
 import { User } from '../utils/db/models/User'
 import { resolve } from 'bluebird';
 
+export async function getMyInfo(openid) {
+  if(openid == undefined || openid == null) throw new Error('openid is invaild')
+
+  let result = await User.findOne({
+    where:{openid},
+    raw:true
+  }).then(user => {
+    return user
+  }).catch(err => {
+    console.log(err, 'getMyInfo failed');
+    return null
+  })
+
+  return result
+}
+
 export async function addUser(newUser) {//将用户添加进数据库，若果已存在直接返回
   
   if (newUser != {}) {

@@ -71,11 +71,12 @@ router.get('/getAllTreeHoles', async ctx => {
 
 router.post('/addLikes', async ctx => {
   let { treeholeId } = ctx.request.body
+    , { openid } = await parseToken(ctx)
     , code = 500
     , result: Boolean;
 
   try{
-    result = await addLikes(treeholeId)
+    result = await addLikes(treeholeId, openid)
     code = 200
   }catch(err) {
     result = err.message
@@ -108,12 +109,12 @@ router.post('/deleteTreeHole', async ctx => {
 })
 router.post('/addTreeHoleComment', async ctx => {
   let { comment, treeholeId } = ctx.request.body
-    , { sex } = await parseToken(ctx)
+    , { sex, openid } = await parseToken(ctx)
     , code = 500
     , result: Boolean;
 
   try{
-    result = await addTreeHoleComment(sex, comment, treeholeId);
+    result = await addTreeHoleComment(sex, comment, treeholeId, openid);
     code = 200
   }catch(err) {
     result = err.message;

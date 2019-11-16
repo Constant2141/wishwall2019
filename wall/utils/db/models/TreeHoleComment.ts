@@ -12,7 +12,12 @@ export class TreeHoleComment extends Model<TreeHoleComment> {
     autoIncrement: true,
   })
   id: number
-  
+    
+  @Column({
+    type: DataType.STRING(190)
+  })
+  openid: string
+
   @Column({
     primaryKey: true,
     type: DataType.STRING(190)

@@ -11,7 +11,10 @@ const sequelize = require('./connect')
 
 
 
-sequelize.addModels([User,Wish,Gain,TreeHole,TreeHoleComment,Star,StarComment,Like,Temp]);
+sequelize.addModels([User,Wish,Gain,TreeHole,TreeHoleComment,Star,StarComment]);
+// sequelize.addModels([User]);
+// sequelize.addModels([User, Wish,Gain,Like]);
+// Gain.belongsTo(Wish, { foreignKey: 'uuid', targetKey: 'uuid' })
 
 sequelize.sync({force:false}).then(res => {
   console.log('init success');

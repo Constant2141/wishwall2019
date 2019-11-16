@@ -49,9 +49,6 @@ export class Temp extends Model<Temp> {
     anonymous: boolean
 
 
-    @Default(false)
-    @Column
-    exceed:boolean  //是否过期，过期的就删除
 
     @Column({
         get() {

@@ -49,8 +49,6 @@ export class Wish extends Model<Wish> {
   @Column
   wish_many: number
 
- 
-
   @Column
   finish_time: Date
 
@@ -61,6 +59,12 @@ export class Wish extends Model<Wish> {
   @Default(false)  //此愿望是否是匿名发布的
   @Column
   anonymous: boolean
+
+
+
+  @Default(false)
+  @Column
+  exceed:boolean  //是否过期，的标识，false没有过期
 
 
   @HasMany(() => Gain)

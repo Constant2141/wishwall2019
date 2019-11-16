@@ -85,20 +85,36 @@ app.on('error', (err, ctx) => {
 
 
 async function syncTemptable() {
+
+  // let wishList = await Wish.findAll();
+  // wishList.forEach(async w => {
+  //   if (w.firstPicker_time) {
+  //     let temp = await Temp.findOne({ where: { uuid: w.uuid }, raw: true })
+  //     if (temp) {
+  //       let now = new Date().getTime()
+  //       let pick = new Date(w.firstPicker_time).getTime()
+  //       let diff = now - pick;
+  //       // console.log(diff / (1000 * 60 * 60)>4);
+  //       if (diff / (1000 * 60 * 60) > 12) {
+  //         await Temp.destroy({
+  //           where: {
+  //             uuid: w.uuid
+  //           }
+  //         })
+  //       }
+  //     }
+  //   }
+  // })
   let wishList = await Wish.findAll();
   wishList.forEach(async w => {
-    if (w.firstPicker_time) {
-      let temp = await Temp.findOne({ where: { uuid: w.uuid }, raw: true })
-      if (temp) {
+    if (w.exceed != true) {
+      if (w.firstPicker_time) {   //如果已经有人领取了
         let now = new Date().getTime()
         let pick = new Date(w.firstPicker_time).getTime()
         let diff = now - pick;
-        // console.log(diff / (1000 * 60 * 60)>4);
-        if (diff / (1000 * 60 * 60)>12) {
-          await Temp.destroy({
-            where: {
-              uuid: w.uuid
-            }
+        if (diff / (1000 * 60 * 60) > 12) { //判断是否超过12小时
+          w.update({
+            exceed: true
           })
         }
       }

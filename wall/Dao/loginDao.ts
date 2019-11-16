@@ -5,6 +5,7 @@ export async function addUser(newUser) {//将用户添加进数据库，若果�
   
   if (newUser != {}) {
     let { openid, nickname, sex, headimgurl,  city, province} = newUser;
+    
     let isNewUser:boolean = true;
     let result: any = await User.findOrCreate({
       where: { openid: openid },

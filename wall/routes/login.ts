@@ -9,11 +9,9 @@ import { addUser } from '../Dao/loginDao';
 let router = new Router();
 
 router.get('/', async ctx => {
-
   let { code } = ctx.request.query
-
   let User = await getUserInfo(code).then(async data => {
-    if (data == {}) {
+    if (data == {}) { 
       return "拿不到用户数据"
     } else {
       // console.log("用户数据在此 : ", data);
@@ -22,7 +20,6 @@ router.get('/', async ctx => {
     }
   })
   User.token = getToken(User)
-
   ctx.body = User
 })
 
@@ -52,6 +49,8 @@ router.get('/test', async ctx => {
       console.log(JSON.parse(data),'=======data');
       return JSON.parse(data)
     })
+    console.log("又到这里吗");
+    
 
   User = await addUser(User)
 

@@ -144,14 +144,14 @@ const handleLikes = async (commentid, upDown, openid) => {
         Like.destroy({where:{commentid}});
     }
 }
-
+//超话详情
 const showOneStar = async (uuid, openid) => {
     let data = await StarComment.findAll({
         where: { uuid },
         order: [
             ['createdAt', 'DESC'],
         ],
-        attributes: ['createdAt','many', 'headimgurl', 'nickname', 'sex', 'comment', 'likes', 'commentid', 'likeOrNot']
+        attributes: ['openid','createdAt','many', 'headimgurl', 'nickname', 'sex', 'comment', 'likes', 'commentid', 'likeOrNot']
     })
 
 
@@ -189,7 +189,7 @@ const removeComment = async (commentid) => {
 }
 
 //删除超话
-const removeWish = async (uuid) => {
+const removeStar = async (uuid) => {
     Star.destroy({ where: { uuid } })
 }
 
@@ -302,7 +302,7 @@ module.exports = {
     myRelated,
     myCreated,
     myComment,
-    removeWish,
+    removeStar,
     topChart,
     searchStar
 }

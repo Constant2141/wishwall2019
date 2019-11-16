@@ -9,23 +9,28 @@ const showAllWish = async (openid, wish_where, curPage, pageSize) => {
     if (!curPage) curPage = 1;
     if (!pageSize) pageSize = 10;
     let wishList;
-    if (wish_where) {
-        wishList = await Temp.findAndCountAll({
+    if (wish_where) {   //如果有筛选校区
+        wishList = await Wish.findAndCountAll({
             order: [
                 ['createdAt', 'DESC']
             ],
             where: {
-                wish_where,
-                wish_status: 0
+                wish_where,  //根据校区 
+                wish_status: 0,//还没有完成的
+                exceed:false
             },
             offset: (curPage - 1) * pageSize,
             limit: Number(pageSize)
         })
     } else {
-        wishList = await Temp.findAndCountAll({
+        wishList = await Wish.findAndCountAll({
             order: [
                 ['createdAt', 'DESC']
             ],
+            where:{
+                wish_status: 0,//还没有完成的
+                exceed:false
+            },
             offset: (curPage - 1) * pageSize,
             limit: Number(pageSize)
         })
@@ -74,7 +79,7 @@ const createWish = async wish => {
 
 
    await Wish.create(obj);
-   await Temp.create(obj);
+//    await Temp.create(obj);
 
 }
 

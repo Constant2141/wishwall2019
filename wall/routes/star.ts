@@ -98,7 +98,7 @@ router.get("/list", async ctx => {
         result
     };
 });
- 
+  
 
 
 //展示指定超话(点进某一个超话里面)
@@ -152,7 +152,7 @@ router.get("/removeComment", async ctx => {
     ctx.body = {
         code,
         result
-    };
+    }; 
 });
 //删除超话
 router.get("/removeStar", async ctx => {

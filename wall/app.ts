@@ -13,13 +13,11 @@ const cors = require('koa2-cors');
 const koaBody = require('koa-body');
 
 import { Wish } from './utils/db/models/Wish'
-import { Temp } from './utils/db/models/Temp'
-import { log } from 'util';
 // error handler
 koaError(app)
 
 app.use(json())
-app.use(logger())
+// app.use(logger())
 app.use(require('koa-static')(__dirname + '/public'))
 app.use(cors());
 
@@ -44,7 +42,7 @@ app.use(async (ctx, next) => {
   const start = new Date().getTime()
   await next()
   const ms = new Date().getTime() - start
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
+  // console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
 
@@ -59,9 +57,9 @@ app.use(
 // token错误拦截与过期
 app.use(async (ctx, next) => {
   if (ctx.header.authorization) {
-    console.log(ctx.header.authorization);
+    // console.log(ctx.header.authorization);
   } else {
-    console.log('没有authorization');
+    // console.log('没有authorization');
   }
   return next().catch(err => {
     if (err.status === 401) {
@@ -85,7 +83,6 @@ app.on('error', (err, ctx) => {
 
 
 async function syncTemptable() {
-
   // let wishList = await Wish.findAll();
   // wishList.forEach(async w => {
   //   if (w.firstPicker_time) {
@@ -121,7 +118,7 @@ async function syncTemptable() {
     }
   })
 }
-setInterval(syncTemptable, 60000)
+setInterval(syncTemptable, 3600000)
 
 
 

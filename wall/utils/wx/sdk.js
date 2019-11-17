@@ -13,12 +13,12 @@ function sha1Ticket(ticket,url){
   let timestamp = 1111111111;
   
   let jsapi_ticket = ticket;
-  console.log(ticket);
+  // console.log(ticket);
   
   const nonceStr = "nw2019wishwall6.0";
-  console.log(url,'123');
+  // console.log(url,'123');
   
-  console.log({timestamp,nonceStr,jsapi_ticket,url});
+  // console.log({timestamp,nonceStr,jsapi_ticket,url});
   
   let query = `jsapi_ticket=${jsapi_ticket}&noncestr=${nonceStr}&timestamp=${timestamp}&url=${url}`
 

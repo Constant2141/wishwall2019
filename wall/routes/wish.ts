@@ -78,8 +78,8 @@ router.get("/gain", async ctx => {
 
 //女生确定愿望已经完成，个人主页用
 router.get("/finish",async ctx =>{
-    console.log('看这里');
-    console.log(ctx.request.query);
+    // console.log('看这里');
+    // console.log(ctx.request.query);
     
     let { uuid } = ctx.request.query;
     let result, code;

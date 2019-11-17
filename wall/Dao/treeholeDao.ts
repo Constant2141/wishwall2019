@@ -22,13 +22,12 @@ export async function addTreeHole(openid,text): Promise<object> {
           raw: true,
         })
         .then(res=>{
-          console.log(res);
           return res.sex
         })
         .catch(e=>{
           throw new Error(e.message)
         })          
-  await console.log(sex,'<<<===sex is here');
+  // await console.log(sex,'<<<===sex is here');
   
   result = await TreeHole.create({
     text,
@@ -124,7 +123,7 @@ export async function getAllTreeHoles(openid,countPerPage,currentPage): Promise<
   
             res[i]['comments'] = comments;
 
-            console.log(comments,'<<===comments is here')
+            // console.log(comments,'<<===comments is here')
 
             return comments;
 
@@ -132,13 +131,13 @@ export async function getAllTreeHoles(openid,countPerPage,currentPage): Promise<
 
       }
 
-    await console.log(res, 'res is here');
+    // await console.log(res, 'res is here');
     
     return await res;
 
   }).catch(e=>{console.log(e);})
 
-  await console.log(result, 'result is here')
+  // await console.log(result, 'result is here')
 
   return await result
 }
@@ -153,7 +152,7 @@ export async function addLikes(treeholeId): Promise<Boolean> {
     where: {treeholeId},
   })
   .then(async res => {
-    console.log(res.getDataValue('likes'),'old');
+    // console.log(res.getDataValue('likes'),'old');
     return await res.update({
       likes: res.getDataValue('likes')+1
     }).then(res => {
@@ -200,7 +199,7 @@ export async function countMyTreeHoles(openid): Promise<Number>{
     return 0
   }).catch(e=>{
     return 0
-    console.log(e)
+    // console.log(e)
   });
 
   return await result

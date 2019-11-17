@@ -10,14 +10,14 @@ export async function  getUserInfo(code) {
 
   return new Promise((resolve,reject)=>{
 
-  console.log('code is here: ',code);
+  // console.log('code is here: ',code);
     if (code != undefined) {
       rp(url)
         .then(data => {
           let { access_token, refresh_token, openid } = JSON.parse(data);
           if (access_token != undefined) {
-            console.log('access_token is here: ', access_token);
-            console.log('refresh_token is here: ', refresh_token);
+            // console.log('access_token is here: ', access_token);
+            // console.log('refresh_token is here: ', refresh_token);
           rp(`https://api.weixin.qq.com/sns/userinfo?access_token=${access_token}&openid=${openid}&lang=zh_CN`)
             .then(data => {
               // console.log('data is here: ', JSON.parse(data));
@@ -30,7 +30,7 @@ export async function  getUserInfo(code) {
               console.log(e);
             })
           } else {
-            console.log('access_token is undefined');
+            // console.log('access_token is undefined');
             resolve(result);
           }
         })

@@ -53,7 +53,7 @@ router.get('/test', async ctx => {
   let newAccess = await rp(`https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=${wxConfig.appid}&grant_type=refresh_token&refresh_token=${refresh_token}`)
     .then(data => {
       // console.log(data,'123',data.access_token);
-      console.log(JSON.parse(data),'=======1');
+      // console.log(JSON.parse(data),'=======1');
       return JSON.parse(data).access_token
     })
 
@@ -61,10 +61,10 @@ router.get('/test', async ctx => {
 
   let User = await rp(`https://api.weixin.qq.com/sns/userinfo?access_token=${newAccess}&openid=${openid}&lang=zh_CN`)
     .then(data => {
-      console.log(JSON.parse(data),'=======data');
+      // console.log(JSON.parse(data),'=======data');
       return JSON.parse(data)
     })
-    console.log("又到这里吗");
+    // console.log("又到这里吗");
     
 
   User = await addUser(User)
@@ -119,7 +119,7 @@ router.get('/getUserInfo', async ctx => {
 
     default:
       flag = true;
-      console.log(0);
+      // console.log(0);
 
   }
 

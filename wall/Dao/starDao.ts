@@ -9,7 +9,7 @@ const Op = Sequelize.Op
 
 //上传超话的背景图
 const uploadfile = async (bgPic, uuid) => {
-    console.log(bgPic.path);
+    // console.log(bgPic.path);
 
     // 创建可读流
     const reader = fs.createReadStream(bgPic.path);
@@ -43,9 +43,9 @@ const createStar = async data => {
 }
 //展示超话列表，flag为1最新排序；0热度排序
 const showAllStar = async (curPage, pageSize, flag) => {
-    console.log("?");
-    console.log(pageSize);
-    console.log(typeof curPage);
+    // console.log("?");
+    // console.log(pageSize);
+    // console.log(typeof curPage);
     
     
     let list = [];
@@ -81,7 +81,7 @@ const showAllStar = async (curPage, pageSize, flag) => {
 //创建评论,
 const addComment = async (user, uuid, comment, commentid?, openid?) => {
 
-    console.log(uuid, commentid, comment, openid);
+    // console.log(uuid, commentid, comment, openid);
 
 
     let { nickname, headimgurl, sex } = user
@@ -99,7 +99,7 @@ const addComment = async (user, uuid, comment, commentid?, openid?) => {
 
     }).then()
         .catch(e => {
-            console.log(e);
+            // console.log(e);
             return null
         })
 
@@ -183,12 +183,23 @@ const showOneComment = async (commentid) => {
     return await data
 }
 
-//删除评论
+//删除评论，大小都是这个
 const removeComment = async (commentid) => {
-    StarComment.destroy({ where: { commentid } })
+   let com = await StarComment.findOne({where:{commentid}})
+    if(com.uuid){ //如果uuid存在，表示是大讨论区,热度减一
+        let st = await Star.findOne({ where:{uuid:com.uuid}})
+        await st.decrement('hot').then() //减少热度
+        await  StarComment.destroy({ where: { commentid } })//删除评论
+        st = await Star.findOne({ where:{uuid:com.uuid}})//再次查询
+        if(st.hot == 0)
+        await Star.destroy({where:{uuid:com.uuid}}) //如果热度没了，整个超话去世
+    }else{
+        StarComment.destroy({ where: { commentid } })
+    }
+ 
 }
 
-//删除超话
+//删除超话,应该没用了
 const removeStar = async (uuid) => {
     Star.destroy({ where: { uuid } })
 }
@@ -200,7 +211,7 @@ const myRelated = async (openid) => {
         order: [
             ['createdAt', 'DESC'],
         ],
-        attributes: [['createdAt', 'comment_time'], 'headimgurl', 'nickname', 'sex', 'comment'],
+        attributes: ['createdAt', 'headimgurl', 'nickname', 'sex', 'comment'],
         include: [{
             model: StarComment,
             as: 'fc',
@@ -228,13 +239,13 @@ const myCreated = async (openid) => {
         order: [
             ['createdAt', 'DESC'],
         ],
-        attributes: ['createdAt', 'headimgurl', 'nickname', 'sex', 'comment', 'likes', 'many', Sequelize.col('fs.title'), Sequelize.col('fs.uuid')],
+        attributes: ['commentid','createdAt', 'headimgurl', 'nickname', 'sex', 'comment', 'likes', 'many'],
         include: [{
             model: Star,
             as: 'fs',
-            attributes: []
+            attributes: ['title','uuid']
         }],
-        raw: true
+        // raw: true
     })
 
     return await data

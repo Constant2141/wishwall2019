@@ -141,13 +141,13 @@ const showCreated = async (openid) => {
         include: [{
             model: Gain,
             // as: 'g',
-            attributes: [['createdAt', 'pick_time'], 'headimgurl', 'nickname']
+            attributes: ['createdAt', 'headimgurl', 'nickname']
         }],
 
     })
 
     return wishList
-}
+} 
 
 //个人主页————查看我领取的愿望
 const showGained = async (openid) => {
@@ -159,24 +159,24 @@ const showGained = async (openid) => {
             openid,
         },
         attributes: [
-            Sequelize.col('w.createdAt'),
-            Sequelize.col('w.uuid'),
-            Sequelize.col('w.contact'),
-            Sequelize.col('w.wish_content'),
-            Sequelize.col('w.wish_type'),
-            Sequelize.col('w.wish_where'),
-            Sequelize.col('w.wish_status'),
-            Sequelize.col('w.wish_many'),
-            Sequelize.col('w.anonymous'),
-            Sequelize.col('w.headimgurl'),
-            Sequelize.col('w.nickname'),
+            // Sequelize.col('w.createdAt'),
+            // Sequelize.col('w.uuid'),
+            // Sequelize.col('w.contact'),
+            // Sequelize.col('w.wish_content'),
+            // Sequelize.col('w.wish_type'),
+            // Sequelize.col('w.wish_where'),
+            // Sequelize.col('w.wish_status'),
+            // Sequelize.col('w.wish_many'),
+            // Sequelize.col('w.anonymous'),
+            // Sequelize.col('w.headimgurl'),
+            // Sequelize.col('w.nickname'),
         ],
         include: [{
             model: Wish,
             as: 'w',
-            attributes: []
+            // attributes: []
         }],
-        raw: true
+        // raw: true
     })
 
     return gainList

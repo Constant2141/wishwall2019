@@ -33,7 +33,7 @@ export async function addUser(newUser) {//将用户添加进数据库，若果�
 
       return User
     }).catch(e => {
-      console.log(e);
+      // console.log(e);
     })
 
     result.dataValues.isNewUser = await isNewUser;
@@ -41,6 +41,6 @@ export async function addUser(newUser) {//将用户添加进数据库，若果�
     return result.dataValues
 
   } else {
-    console.log('newUser is null !');
+    // console.log('newUser is null !');
   }
 }

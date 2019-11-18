@@ -8,7 +8,9 @@ import { addTreeHole
        , addLikes
        , addTreeHoleComment
        , countMyTreeHoles
-       , deleteTreeHole } from '../Dao/treeholeDao';
+       , deleteTreeHole 
+       , countAllTreeHoles
+      } from '../Dao/treeholeDao';
 
 router.post('/addTreeHole', async ctx => {
   let { text }: { text: string } = ctx.request.body
@@ -145,4 +147,22 @@ router.get('/countMyTreeHoles', async ctx => {
   };
 })
 
+router.get('/countAllTreeHoles' ,async ctx => {
+  let { openid } = await parseToken(ctx)
+    , code = 500
+    , result: Number;
+
+  try {
+    result = await countAllTreeHoles(openid);
+    code = 200
+  } catch (err) {
+    result = err.message
+    code = 500
+  }
+
+  ctx.body = await {
+    code,
+    result
+  };
+})
 module.exports = router;

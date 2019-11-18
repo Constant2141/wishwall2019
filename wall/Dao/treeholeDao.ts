@@ -82,7 +82,21 @@ export async function  getMyTreeHoles(openid): Promise<any> {
     
     return await result;
 }
+export async function countAllTreeHoles(openid): Promise<Number>{
 
+  if(isNullOrUndefined(openid)) throw new Error('openid is invalid')
+  let result: Number;
+
+  result = await TreeHole.count({
+    where:{
+      openid:{
+        [Op.ne]:openid
+      }
+    }
+  }).then(num => num).catch(()=>0)
+
+  return result
+}
 export async function getAllTreeHoles(openid,countPerPage,currentPage): Promise<any>{
 
   if(isNullOrUndefined(openid)) throw new Error('openid is invalid')
@@ -97,6 +111,9 @@ export async function getAllTreeHoles(openid,countPerPage,currentPage): Promise<
         [Op.ne]:openid
       }
     },
+    order: [
+        ['id', 'DESC'],
+    ],
     limit: countPerPage, // 每页多少条
     offset: countPerPage * (currentPage - 1), // 跳过多少条
     raw: true
